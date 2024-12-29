@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { positions } from "../../public/positions";
 
 const PlayerForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -10,6 +11,13 @@ const PlayerForm = () => {
   const [devTrait, setDevTrait] = useState("");
   const [redshirted, setRedshirted] = useState(false);
   const [currentRedshirt, setCurrentRedshirt] = useState(false);
+
+  const handlePositionChange = (e) => {
+    setPosition(e.target.value);
+    setArchetype(""); // Reset archetype when position changes
+  };
+
+  const potentialArchetypes = position ? positions[position] : [];
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -77,35 +85,54 @@ const PlayerForm = () => {
 
         <div>
           <label htmlFor="classYear">Class Year:</label>
-          <input
-            type="text"
+          <select
             id="classYear"
             value={classYear}
             onChange={(e) => setClassYear(e.target.value)}
             required
-          />
+          >
+            <option value="">Select</option>
+            <option value="Freshman">Freshman</option>
+            <option value="Sophomore">Sophomore</option>
+            <option value="Junior">Junior</option>
+            <option value="Senior">Senior</option>
+          </select>
         </div>
 
         <div>
           <label htmlFor="position">Position:</label>
-          <input
+          <select
             type="text"
             id="position"
             value={position}
-            onChange={(e) => setPosition(e.target.value)}
+            onChange={handlePositionChange}
             required
-          />
+          >
+            <option value="">Select Position</option>
+            {Object.keys(positions).map((position) => (
+              <option key={position} value={position}>
+                {position}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
           <label htmlFor="archetype">Archetype:</label>
-          <input
-            type="text"
+          <select
             id="archetype"
             value={archetype}
             onChange={(e) => setArchetype(e.target.value)}
             required
-          />
+            disabled={!position} // Disable if no position is selected
+          >
+            <option value="">Select Archetype</option>
+            {potentialArchetypes.map((archetype) => (
+              <option key={archetype} value={archetype}>
+                {archetype}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
@@ -115,18 +142,26 @@ const PlayerForm = () => {
             id="overall"
             value={overall}
             onChange={(e) => setOverall(e.target.value)}
+            min="1"
+            max="99"
             required
           />
         </div>
 
         <div>
           <label htmlFor="devTrait">Development Trait:</label>
-          <input
-            type="text"
+          <select
             id="devTrait"
             value={devTrait}
             onChange={(e) => setDevTrait(e.target.value)}
-          />
+            required
+          >
+            <option value="">Select Development Trait</option>
+            <option value="Normal">Normal</option>
+            <option value="Impact">Impact</option>
+            <option value="Star">Star</option>
+            <option value="Elite">Elite</option>
+          </select>
         </div>
 
         <div>

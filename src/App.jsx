@@ -12,22 +12,30 @@ import DeleteUser from "./components/DeleteUser";
 import UpdateUser from "./components/UpdateUser";
 import PlayerForm from "./components/Playerform";
 import PlayerTable from "./components/PlayerTable";
+import RecruitForm from "./components/RecruitForm";
+import RecruitTable from "./components/RecruitTable";
+import useAuth from "./hooks/useAuth";
+import LoginPage from "./components/LoginPage";
+import { Routes, Route } from "react-router-dom";
+import DynastyPage from "./components/DynastyPage";
+import AccountPage from "./components/AccountPage";
+import RosterPage from "./components/RosterPage";
+import RecruitingPage from "./components/RecruitingPage";
+import Navbar from "./components/Navbar";
 
 function App() {
+  const { isLoggedIn, user } = useAuth();
+
   return (
     <>
-      <h1>College Football 25 Dynasty Tracker</h1>
-
-      <RegistrationForm />
-      <LoginForm />
-      <DisplayUser />
-      <UpdateUser />
-      <DeleteUser />
-      <LogoutButton />
-      <CreateDynastyForm />
-      <DynastyList />
-      <PlayerForm />
-      <PlayerTable />
+      <Navbar isLoggedIn={isLoggedIn} />
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/saves" element={<DynastyPage />} />
+        <Route path="/account" element={<AccountPage />} />
+        <Route path="/roster" element={<RosterPage />} />
+        <Route path="/recruiting" element={<RecruitingPage />} />
+      </Routes>
     </>
   );
 }

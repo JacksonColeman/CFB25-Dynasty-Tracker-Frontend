@@ -4,6 +4,7 @@ const DeleteUser = () => {
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(false); // state to track confirmation
 
   // Fetch the current user's id when the component mounts
   useEffect(() => {
@@ -26,6 +27,11 @@ const DeleteUser = () => {
   const handleDelete = async () => {
     if (!userId) {
       setError("No user is logged in.");
+      return;
+    }
+
+    if (!confirmDelete) {
+      setConfirmDelete(true); // Show confirmation step
       return;
     }
 
@@ -52,11 +58,29 @@ const DeleteUser = () => {
     }
   };
 
+  const handleCancel = () => {
+    setConfirmDelete(false); // Reset confirmation step if user cancels
+  };
+
   return (
     <div>
       <button onClick={handleDelete} style={{ color: "red" }}>
         Delete Account
       </button>
+
+      {confirmDelete && (
+        <div>
+          <p>
+            Are you sure you want to delete your account? This cannot be undone.
+          </p>
+          <button onClick={handleDelete} style={{ color: "red" }}>
+            Confirm Delete
+          </button>
+          <button onClick={handleCancel} style={{ color: "gray" }}>
+            Cancel
+          </button>
+        </div>
+      )}
 
       {message && <p style={{ color: "green" }}>{message}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
