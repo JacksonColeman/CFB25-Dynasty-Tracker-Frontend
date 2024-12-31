@@ -1,190 +1,110 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDynasty } from "../../contexts/DynastyContext";
 
 const DynastyList = () => {
-  // State to hold the dynasties, current dynasty, and error messages
-  const [dynasties, setDynasties] = useState([]);
-  const [currentDynasty, setCurrentDynasty] = useState(null);
-  const [error, setError] = useState(null);
-  const [editingDynasty, setEditingDynasty] = useState(null);
-  const [updatedName, setUpdatedName] = useState("");
-  const [updatedYear, setUpdatedYear] = useState("");
+  const [newDynastyName, setNewDynastyName] = useState("");
+  const { dynasties, currentDynasty, loading, loadDynasties, setActive } =
+    useDynasty();
+  const navigate = useNavigate();
 
-  // Fetch dynasties from the API on component mount
   useEffect(() => {
-    const fetchDynasties = async () => {
-      try {
-        const response = await fetch("/api/dynasties");
-        if (response.ok) {
-          const data = await response.json();
-          setDynasties(data); // Set dynasties in state
-          setError(null); // Clear any previous errors
-        } else {
-          const errorData = await response.json();
-          setError(errorData.error || "Failed to fetch dynasties.");
-        }
-      } catch (err) {
-        setError("An error occurred. Please try again.");
-      }
-    };
+    loadDynasties();
+    console.log("Dynasties:", dynasties);
+  }, []);
 
-    const fetchCurrentDynasty = async () => {
-      try {
-        const response = await fetch("/api/dynasties/current");
-        if (response.ok) {
-          const data = await response.json();
-          setCurrentDynasty(data); // Set current dynasty in state
-        } else {
-          const errorData = await response.json();
-          setError(errorData.error || "Failed to fetch current dynasty.");
-        }
-      } catch (err) {
-        setError("An error occurred. Please try again.");
-      }
-    };
-
-    fetchDynasties();
-    fetchCurrentDynasty();
-  }, []); // Empty dependency array means this effect runs once when the component mounts
-
-  // Set the selected dynasty as the current one
-  const setCurrent = async (dynastyId) => {
+  const handleDynastySelect = async (dynastyId) => {
     try {
-      const response = await fetch("/api/dynasties/set_current", {
+      await setActive(dynastyId);
+      navigate("/roster"); // Navigate to roster page after selection
+    } catch (error) {
+      console.error("Error selecting dynasty:", error);
+    }
+  };
+
+  const handleCreateDynasty = async (e) => {
+    e.preventDefault();
+    if (!newDynastyName.trim()) return;
+
+    try {
+      const response = await fetch("/api/dynasties", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: dynastyId }),
+        body: JSON.stringify({ name: newDynastyName }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setCurrentDynasty(data); // Set the newly selected dynasty as current
-        setError(null); // Clear previous error
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || "Failed to set current dynasty.");
+      if (!response.ok) {
+        throw new Error("Failed to create dynasty");
       }
-    } catch (err) {
-      setError("An error occurred. Please try again.");
+
+      setNewDynastyName("");
+      await loadDynasties(); // Refresh the dynasty list
+    } catch (error) {
+      console.error("Error creating dynasty:", error);
     }
   };
 
-  // Handle dynasty update
-  const handleUpdate = async () => {
-    try {
-      const response = await fetch(`/api/dynasties/${editingDynasty.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          dynasty_name: updatedName,
-          year: updatedYear,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setDynasties((prevDynasties) =>
-          prevDynasties.map((dynasty) =>
-            dynasty.id === data.id ? data : dynasty
-          )
-        );
-        setEditingDynasty(null); // Close the edit form
-        setUpdatedName("");
-        setUpdatedYear("");
-        setError(null); // Clear previous error
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || "Failed to update dynasty.");
-      }
-    } catch (err) {
-      setError("An error occurred. Please try again.");
-    }
-  };
-
-  // Handle dynasty deletion
-  const handleDelete = async (dynastyId) => {
-    try {
-      const response = await fetch(`/api/dynasties/${dynastyId}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setDynasties((prevDynasties) =>
-          prevDynasties.filter((dynasty) => dynasty.id !== dynastyId)
-        );
-        setError(null); // Clear previous error
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || "Failed to delete dynasty.");
-      }
-    } catch (err) {
-      setError("An error occurred. Please try again.");
-    }
-  };
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <h2>Dynasty List</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}{" "}
-      {/* Display error message if there's one */}
-      {currentDynasty ? (
-        <div>
-          <h3>Current Dynasty</h3>
-          <p>
-            <strong>{currentDynasty.dynasty_name}</strong> (
-            {currentDynasty.school_name}) - {currentDynasty.year}
-          </p>
-        </div>
-      ) : (
-        <p>No current dynasty set.</p>
-      )}
-      <ul>
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          Your Dynasties
+        </h2>
+
+        {/* Dynasty List */}
         {dynasties.length === 0 ? (
-          <li>No dynasties available.</li> // If no dynasties, show this message
+          <div className="text-center py-8 text-gray-500">
+            No dynasties yet. Create one to get started!
+          </div>
         ) : (
-          dynasties.map((dynasty) => (
-            <li key={dynasty.id}>
-              <strong>{dynasty.dynasty_name}</strong> ({dynasty.school_name}) -{" "}
-              {dynasty.year}
-              <button onClick={() => setCurrent(dynasty.id)}>
-                Set as Current
-              </button>
-              <button
-                onClick={() => {
-                  setEditingDynasty(dynasty);
-                  setUpdatedName(dynasty.dynasty_name);
-                  setUpdatedYear(dynasty.year);
-                }}
+          <div className="grid gap-4">
+            {dynasties.map((dynasty) => (
+              <div
+                key={dynasty.id}
+                className={`border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
+                  currentDynasty?.id === dynasty.id
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-gray-200"
+                }`}
+                onClick={() => handleDynastySelect(dynasty.id)}
               >
-                Edit
-              </button>
-              <button onClick={() => handleDelete(dynasty.id)}>Delete</button>
-            </li>
-          ))
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p
+                      className={
+                        currentDynasty?.id === dynasty.id ? "bold" : "nah"
+                      }
+                    >
+                      {dynasty.dynasty_name} • {dynasty.school_name} •{" "}
+                      {dynasty.year}{" "}
+                      {currentDynasty?.id === dynasty.id ? "Active" : null}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Optional: Add dynasty stats/summary here */}
+                {dynasty.stats && (
+                  <div className="mt-2 grid grid-cols-3 gap-4 text-sm text-gray-600">
+                    <div>Players: {dynasty.stats.player_count}</div>
+                    <div>Recruits: {dynasty.stats.recruit_count}</div>
+                    <div>Season: {dynasty.stats.current_season}</div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         )}
-      </ul>
-      {editingDynasty && (
-        <div>
-          <h3>Edit Dynasty</h3>
-          <input
-            type="text"
-            value={updatedName}
-            onChange={(e) => setUpdatedName(e.target.value)}
-            placeholder="Dynasty Name"
-          />
-          <input
-            type="number"
-            value={updatedYear}
-            onChange={(e) => setUpdatedYear(e.target.value)}
-            placeholder="Year"
-          />
-          <button onClick={handleUpdate}>Save Changes</button>
-          <button onClick={() => setEditingDynasty(null)}>Cancel</button>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
