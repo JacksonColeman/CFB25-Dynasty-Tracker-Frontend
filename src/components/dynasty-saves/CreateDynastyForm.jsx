@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { schools } from "../../public/schools";
+import { schools } from "../../../public/schools";
 
 const CreateDynastyForm = () => {
   // State to hold form values

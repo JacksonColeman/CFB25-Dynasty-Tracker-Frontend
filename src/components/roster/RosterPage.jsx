@@ -1,5 +1,5 @@
 import React from "react";
-import PlayerForm from "./Playerform";
+import PlayerForm from "./PlayerForm";
 import PlayerTable from "./PlayerTable";
 
 const RosterPage = () => {

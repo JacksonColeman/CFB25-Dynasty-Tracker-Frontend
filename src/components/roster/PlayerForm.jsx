@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { positions } from "../../public/positions";
+import { positions } from "../../../public/positions";
 
 const PlayerForm = () => {
   const [firstName, setFirstName] = useState("");

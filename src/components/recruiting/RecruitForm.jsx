@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { positions } from "../../public/positions";
+import { positions } from "../../../public/positions";
 
 const RecruitForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -39,7 +39,7 @@ const RecruitForm = () => {
       gem: gem,
       bust: bust,
       recruiting_stage: recruitingStage,
-      visit_week: visitWeek,
+      // visit_week: visitWeek,
       notes: notes,
     };
 
@@ -99,6 +99,7 @@ const RecruitForm = () => {
             onChange={(e) => setRecruitClass(e.target.value)}
             required
           >
+            <option value="">Select</option>
             <option value="High School">High School</option>
             <option value="JUCO (FR)">JUCO (FR)</option>
             <option value="JUCO (SO)">JUCO (SO)</option>
@@ -116,11 +117,12 @@ const RecruitForm = () => {
             onChange={(e) => setStarRating(Number(e.target.value))}
             required
           >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            <option value="">Select</option>
             <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
           </select>
         </div>
 
@@ -202,15 +204,21 @@ const RecruitForm = () => {
 
         <div>
           <label htmlFor="recruitingStage">Recruiting Stage:</label>
-          <input
-            type="text"
+          <select
             id="recruitingStage"
             value={recruitingStage}
             onChange={(e) => setRecruitingStage(e.target.value)}
-          />
+          >
+            <option value="">Select</option>
+            <option value="Open">Open</option>
+            <option value="Top 8">Top 8</option>
+            <option value="Top 5">Top 5</option>
+            <option value="Top 3">Top 3</option>
+            <option value="Committed">Committed</option>
+          </select>
         </div>
 
-        <div>
+        {/* <div>
           <label htmlFor="visitWeek">Visit Week:</label>
           <input
             type="number"
@@ -218,7 +226,7 @@ const RecruitForm = () => {
             value={visitWeek}
             onChange={(e) => setVisitWeek(e.target.value)}
           />
-        </div>
+        </div> */}
 
         <div>
           <label htmlFor="notes">Notes:</label>
