@@ -1,36 +1,52 @@
-import React, { useState } from "react";
-import PlayerForm from "./PlayerForm";
-import PlayerTable from "./PlayerTable";
+import React from "react";
 import { useRoster } from "../../contexts/RosterContext";
-import PlayerList from "./PlayerList";
-import { useDynasty } from "../../contexts/DynastyContext";
 import RosterControlPanel from "./RosterControlPanel";
+import PlayerDisplay from "./PlayerDisplay";
+
+const customPositionOrder = [
+  "QB",
+  "HB",
+  "FB",
+  "WR",
+  "TE",
+  "LT",
+  "LG",
+  "C",
+  "RG",
+  "RT",
+  "LE",
+  "RE",
+  "DT",
+  "LOLB",
+  "MLB",
+  "ROLB",
+  "CB",
+  "FS",
+  "SS",
+  "K",
+  "P",
+];
 
 const RosterPage = () => {
   const { players } = useRoster();
-  const [rosterView, setRosterView] = useState("list");
 
-  const onToggleRosterView = () => {
-    if (rosterView == "list") {
-      setRosterView("table");
-    } else {
-      setRosterView("list");
+  // Sort players by position and then by overall
+  const sortedPlayers = [...players].sort((a, b) => {
+    const positionComparison =
+      customPositionOrder.indexOf(a.position) -
+      customPositionOrder.indexOf(b.position);
+
+    if (positionComparison !== 0) {
+      return positionComparison; // Sort by position first
     }
-    return;
-  };
+
+    return b.overall - a.overall; // Tiebreaker: Sort by overall descending
+  });
 
   return (
     <div>
-      <PlayerForm />
-      <RosterControlPanel
-        players={players}
-        toggleRosterView={onToggleRosterView}
-      />
-      {rosterView == "list" ? (
-        <PlayerList players={players} />
-      ) : (
-        <PlayerTable players={players} />
-      )}
+      <RosterControlPanel players={sortedPlayers} />
+      <PlayerDisplay players={sortedPlayers} />
     </div>
   );
 };

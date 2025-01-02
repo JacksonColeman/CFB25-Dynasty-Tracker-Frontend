@@ -9,8 +9,6 @@ const PlayerTable = ({ players }) => {
 
   return (
     <div>
-      <h2>Players in Current Dynasty</h2>
-
       <table>
         <thead>
           <tr>

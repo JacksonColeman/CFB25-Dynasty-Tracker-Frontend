@@ -3,8 +3,9 @@ import { useDynasty } from "../../contexts/DynastyContext";
 import { useRoster } from "../../contexts/RosterContext";
 import BulkUpdatePlayersModal from "./BulkUpdatePlayersModal";
 import ManageRedshirtsModal from "./ManageRedshirtsModal";
+import PlayerForm from "./PlayerForm";
 
-const RosterControlPanel = ({ players, toggleRosterView }) => {
+const RosterControlPanel = ({ players }) => {
   const { advanceYear } = useDynasty();
   const { clearGraduates, clearRoster, bulkUpdatePlayers, bulkUpdateRedshirt } =
     useRoster();
@@ -13,6 +14,7 @@ const RosterControlPanel = ({ players, toggleRosterView }) => {
   const [confirmClearRoster, setConfirmClearRoster] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRedshirtModalOpen, setIsRedshirtModalOpen] = useState(false);
+  const [isCreatePlayerModalOpen, setIsCreatePlayerModalOpen] = useState(false);
 
   const handleAdvanceYear = async () => {
     try {
@@ -50,13 +52,13 @@ const RosterControlPanel = ({ players, toggleRosterView }) => {
     }
   };
 
-  const handleToggleRosterView = () => {
-    toggleRosterView();
-  };
-
   return (
     <div>
-      <button onClick={handleToggleRosterView}>Toggle View</button>
+      <button
+        onClick={() => setIsCreatePlayerModalOpen(!isCreatePlayerModalOpen)}
+      >
+        Create Players?
+      </button>
       <button onClick={handleAdvanceYear}>Advance Year</button>
       <button onClick={handleClearGraduates}>
         {confirmClearGraduates ? "Confirm Clear Graduates?" : "Clear Graduates"}
@@ -82,6 +84,7 @@ const RosterControlPanel = ({ players, toggleRosterView }) => {
         onClose={() => setIsRedshirtModalOpen(false)}
         updatePlayers={bulkUpdateRedshirt}
       />
+      {isCreatePlayerModalOpen ? <PlayerForm /> : null}
     </div>
   );
 };

@@ -22,6 +22,8 @@ const ManageRedshirtsModal = ({
             first_name: player.first_name,
             last_name: player.last_name,
             current_redshirt: player.current_redshirt,
+            position: player.position,
+            overall: player.overall,
           }))
       );
     }
@@ -83,9 +85,6 @@ const ManageRedshirtsModal = ({
           {updatedPlayers.map((player) => (
             <div key={player.id} className="bulk-update-player-item">
               <div className="flex justify-between items-center">
-                <span className="font-medium">
-                  {player.first_name} {player.last_name}
-                </span>
                 <input
                   type="checkbox"
                   checked={player.current_redshirt}
@@ -93,6 +92,10 @@ const ManageRedshirtsModal = ({
                     handleRedshirtChange(player.id, e.target.checked)
                   }
                 />
+                <span className="font-medium">
+                  {player.first_name} {player.last_name} - {player.overall} OVR{" "}
+                  {player.position}
+                </span>
               </div>
             </div>
           ))}

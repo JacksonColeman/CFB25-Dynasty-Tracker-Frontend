@@ -61,7 +61,7 @@ const PlayerForm = () => {
 
   return (
     <div>
-      <h2>Create Player</h2>
+      <p>Create Player</p>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="firstName">First Name:</label>

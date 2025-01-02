@@ -1,10 +1,10 @@
 import React from "react";
 import PlayerListItem from "./PlayerListItem";
+import { positions } from "../../../public/positions";
 
 const PlayerList = ({ players }) => {
   return (
     <div>
-      <p>Player List</p>
       {players.map((p) => (
         <PlayerListItem player={p} key={p.id} />
       ))}
