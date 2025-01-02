@@ -21,3 +21,8 @@ button {
   align-items: center;
   gap: 50px;
 }
+
+.bulk-update-player-item {
+  margin-bottom: 10px;
+  border: 1px solid black;
+}

@@ -119,4 +119,38 @@ export const api = {
     fetch(`${API_BASE}/dynasties/current/advance_class_years`, {
       method: "PUT",
     }),
+
+  clearGraduates: () =>
+    fetch(`${API_BASE}/dynasties/current/clear_graduates`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }),
+
+  clearRoster: () =>
+    fetch(`${API_BASE}/dynasties/current/clear_roster`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }),
+
+  bulkUpdatePlayers: (data) =>
+    fetch(`${API_BASE}/dynasties/current/bulk_update_players`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }),
+
+  bulkUpdateRedshirt: (data) =>
+    fetch(`${API_BASE}/dynasties/current/bulk_update_redshirt`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }),
 };

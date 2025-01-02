@@ -5,7 +5,7 @@ const RecruitForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [starRating, setStarRating] = useState(0);
-  const [recruitClass, setRecruitClass] = useState("");
+  const [recruitClass, setRecruitClass] = useState("High School");
   const [position, setPosition] = useState("");
   const [archetype, setArchetype] = useState("");
   const [athlete, setAthlete] = useState(false);
@@ -99,7 +99,6 @@ const RecruitForm = () => {
             onChange={(e) => setRecruitClass(e.target.value)}
             required
           >
-            <option value="">Select</option>
             <option value="High School">High School</option>
             <option value="JUCO (FR)">JUCO (FR)</option>
             <option value="JUCO (SO)">JUCO (SO)</option>
@@ -117,7 +116,9 @@ const RecruitForm = () => {
             onChange={(e) => setStarRating(Number(e.target.value))}
             required
           >
-            <option value="">Select</option>
+            <option value="0" disabled>
+              Select
+            </option>
             <option value="5">5</option>
             <option value="4">4</option>
             <option value="3">3</option>
@@ -135,7 +136,9 @@ const RecruitForm = () => {
             onChange={handlePositionChange}
             required
           >
-            <option value="">Select Position</option>
+            <option value="" disabled>
+              Select Position
+            </option>
             {Object.keys(positions).map((position) => (
               <option key={position} value={position}>
                 {position}
@@ -153,7 +156,9 @@ const RecruitForm = () => {
             required
             disabled={!position} // Disable if no position is selected
           >
-            <option value="">Select Archetype</option>
+            <option value="" disabled>
+              Select Archetype
+            </option>
             {potentialArchetypes.map((archetype) => (
               <option key={archetype} value={archetype}>
                 {archetype}
@@ -189,6 +194,7 @@ const RecruitForm = () => {
             id="gem"
             checked={gem}
             onChange={(e) => setGem(e.target.checked)}
+            disabled={!scouted || bust}
           />
         </div>
 
@@ -199,6 +205,7 @@ const RecruitForm = () => {
             id="bust"
             checked={bust}
             onChange={(e) => setBust(e.target.checked)}
+            disabled={!scouted || gem}
           />
         </div>
 

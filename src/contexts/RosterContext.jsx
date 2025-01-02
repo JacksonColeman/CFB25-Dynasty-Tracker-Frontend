@@ -23,6 +23,12 @@ export const RosterProvider = ({ children }) => {
     initializeRoster();
   }, [currentDynasty]);
 
+  const loadPlayers = async () => {
+    const response = await api.getPlayers();
+    const players = await response.json();
+    setPlayers(players);
+  };
+
   const deletePlayer = async (playerId) => {
     try {
       await api.deletePlayer(playerId);
@@ -65,9 +71,76 @@ export const RosterProvider = ({ children }) => {
     }
   };
 
+  const clearGraduates = async () => {
+    try {
+      // Call the API to clear graduates
+      const response = await api.clearGraduates();
+
+      if (response.ok) {
+        console.log("Graduates cleared successfully.");
+        await loadPlayers(); // Reload the updated players using the loadPlayers function
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to clear graduates:", errorData.error);
+        throw new Error(errorData.error);
+      }
+    } catch (err) {
+      console.error("An error occurred:", err);
+      alert("An error occurred while clearing graduates. Please try again.");
+      throw err;
+    }
+  };
+
+  const clearRoster = async () => {
+    try {
+      // Call the API to clear graduates
+      const response = await api.clearRoster();
+      setPlayers([]);
+    } catch (err) {
+      console.error("An error occurred:", err);
+      alert("An error occurred while clearing the roster. Please try again.");
+      throw err;
+    }
+  };
+
+  const bulkUpdatePlayers = async (data) => {
+    try {
+      const response = await api.bulkUpdatePlayers(data);
+      if (!response.ok) {
+        throw new Error("Failed to bulk update players");
+      }
+      await loadPlayers();
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
+  const bulkUpdateRedshirt = async (data) => {
+    try {
+      const response = await api.bulkUpdateRedshirt(data);
+      if (!response.ok) {
+        throw new Error("Failed to bulk update redshirts");
+      }
+      await loadPlayers();
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
   return (
     <RosterContext.Provider
-      value={{ players, createPlayer, updatePlayer, deletePlayer }}
+      value={{
+        players,
+        createPlayer,
+        updatePlayer,
+        deletePlayer,
+        clearGraduates,
+        clearRoster,
+        bulkUpdatePlayers,
+        bulkUpdateRedshirt,
+      }}
     >
       {children}
     </RosterContext.Provider>

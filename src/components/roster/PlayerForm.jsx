@@ -3,61 +3,60 @@ import { positions } from "../../../public/positions";
 import { useRoster } from "../../contexts/RosterContext";
 
 const PlayerForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [classYear, setClassYear] = useState("");
-  const [position, setPosition] = useState("");
-  const [archetype, setArchetype] = useState("");
-  const [overall, setOverall] = useState(0);
-  const [devTrait, setDevTrait] = useState("");
-  const [redshirted, setRedshirted] = useState(false);
-  const [currentRedshirt, setCurrentRedshirt] = useState(false);
-  const { createPlayer } = useRoster();
-
-  const handlePositionChange = (e) => {
-    setPosition(e.target.value);
-    setArchetype(""); // Reset archetype when position changes
+  const defaultValues = {
+    firstName: "",
+    lastName: "",
+    classYear: "",
+    position: "",
+    archetype: "",
+    overall: 75,
+    devTrait: "Normal",
+    redshirted: false,
+    currentRedshirt: false,
   };
 
-  const potentialArchetypes = position ? positions[position] : [];
+  const [formData, setFormData] = useState(defaultValues);
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
+  const { createPlayer } = useRoster();
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handlePositionChange = (e) => {
+    const newPosition = e.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      position: newPosition,
+      archetype: "", // Reset archetype when position changes
+    }));
+  };
+
+  const potentialArchetypes = formData.position
+    ? positions[formData.position]
+    : [];
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const playerData = {
-      first_name: firstName,
-      last_name: lastName,
-      class_year: classYear,
-      position: position,
-      archetype: archetype,
-      overall: overall,
-      dev_trait: devTrait,
-      redshirted: redshirted,
-      current_redshirt: currentRedshirt,
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      class_year: formData.classYear,
+      position: formData.position,
+      archetype: formData.archetype,
+      overall: formData.overall,
+      dev_trait: formData.devTrait,
+      redshirted: formData.redshirted,
+      current_redshirt: formData.currentRedshirt,
     };
 
-    // try {
     createPlayer(playerData);
-    //   const response = await fetch("/api/players", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(playerData),
-    //   });
-
-    //   if (response.ok) {
-    //     const data = await response.json();
-    //     alert("Player created successfully!");
-    //   } else {
-    //     const errorData = await response.json();
-    //     alert(`Error: ${errorData.error}`);
-    //   }
-    // } catch (err) {
-    //   console.error("Error creating player:", err);
-    //   alert("An error occurred while creating the player.");
-    // }
+    setFormData(defaultValues);
   };
 
   return (
@@ -69,8 +68,9 @@ const PlayerForm = () => {
           <input
             type="text"
             id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
             required
           />
         </div>
@@ -80,8 +80,9 @@ const PlayerForm = () => {
           <input
             type="text"
             id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
             required
           />
         </div>
@@ -90,11 +91,14 @@ const PlayerForm = () => {
           <label htmlFor="classYear">Class Year:</label>
           <select
             id="classYear"
-            value={classYear}
-            onChange={(e) => setClassYear(e.target.value)}
+            name="classYear"
+            value={formData.classYear}
+            onChange={handleChange}
             required
           >
-            <option value="">Select</option>
+            <option value="" disabled>
+              Select
+            </option>
             <option value="Freshman">Freshman</option>
             <option value="Sophomore">Sophomore</option>
             <option value="Junior">Junior</option>
@@ -105,13 +109,15 @@ const PlayerForm = () => {
         <div>
           <label htmlFor="position">Position:</label>
           <select
-            type="text"
             id="position"
-            value={position}
+            name="position"
+            value={formData.position}
             onChange={handlePositionChange}
             required
           >
-            <option value="">Select Position</option>
+            <option value="" disabled>
+              Select Position
+            </option>
             {Object.keys(positions).map((position) => (
               <option key={position} value={position}>
                 {position}
@@ -124,12 +130,15 @@ const PlayerForm = () => {
           <label htmlFor="archetype">Archetype:</label>
           <select
             id="archetype"
-            value={archetype}
-            onChange={(e) => setArchetype(e.target.value)}
+            name="archetype"
+            value={formData.archetype}
+            onChange={handleChange}
             required
-            disabled={!position} // Disable if no position is selected
+            disabled={!formData.position} // Disable if no position is selected
           >
-            <option value="">Select Archetype</option>
+            <option value="" disabled>
+              Select Archetype
+            </option>
             {potentialArchetypes.map((archetype) => (
               <option key={archetype} value={archetype}>
                 {archetype}
@@ -141,13 +150,27 @@ const PlayerForm = () => {
         <div>
           <label htmlFor="overall">Overall:</label>
           <input
-            type="number"
+            type="range"
             id="overall"
-            value={overall}
-            onChange={(e) => setOverall(e.target.value)}
+            name="overall"
             min="1"
             max="99"
-            required
+            value={formData.overall}
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            id="overallNumber"
+            name="overall"
+            value={formData.overall}
+            onChange={handleChange}
+            min="1"
+            max="99"
+            onInput={(e) => {
+              // If the input value is outside the allowed range, prevent further input
+              if (e.target.value < 1) e.target.value = 1;
+              if (e.target.value > 99) e.target.value = 99;
+            }}
           />
         </div>
 
@@ -155,11 +178,14 @@ const PlayerForm = () => {
           <label htmlFor="devTrait">Development Trait:</label>
           <select
             id="devTrait"
-            value={devTrait}
-            onChange={(e) => setDevTrait(e.target.value)}
+            name="devTrait"
+            value={formData.devTrait}
+            onChange={handleChange}
             required
           >
-            <option value="">Select Development Trait</option>
+            <option value="" disabled>
+              Select Development Trait
+            </option>
             <option value="Normal">Normal</option>
             <option value="Impact">Impact</option>
             <option value="Star">Star</option>
@@ -172,9 +198,10 @@ const PlayerForm = () => {
           <input
             type="checkbox"
             id="redshirted"
-            checked={redshirted}
-            onChange={(e) => setRedshirted(e.target.checked)}
-            disabled={currentRedshirt}
+            name="redshirted"
+            checked={formData.redshirted}
+            onChange={handleChange}
+            disabled={formData.currentRedshirt}
           />
         </div>
 
@@ -183,9 +210,10 @@ const PlayerForm = () => {
           <input
             type="checkbox"
             id="currentRedshirt"
-            checked={currentRedshirt}
-            onChange={(e) => setCurrentRedshirt(e.target.checked)}
-            disabled={redshirted}
+            name="currentRedshirt"
+            checked={formData.currentRedshirt}
+            onChange={handleChange}
+            disabled={formData.redshirted}
           />
         </div>
 

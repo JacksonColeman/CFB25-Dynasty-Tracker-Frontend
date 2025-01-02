@@ -151,15 +151,35 @@ const EditPlayerForm = ({ player, saveEdit }) => {
         </label>
       </div>
       <div>
-        <label>
-          Overall:
-          <input
-            type="number"
-            name="overall"
-            value={formValues.overall}
-            onChange={handleChange}
-          />
-        </label>
+        <label htmlFor="overall">Overall:</label>
+        <input
+          type="range"
+          id="overall"
+          name="overall"
+          min="1"
+          max="99"
+          onInput={(e) => {
+            // If the input value is outside the allowed range, prevent further input
+            if (e.target.value < 1) e.target.value = 1;
+            if (e.target.value > 99) e.target.value = 99;
+          }}
+          value={formValues.overall}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="overall"
+          value={formValues.overall}
+          onChange={handleChange}
+          min="1"
+          max="99"
+          onInput={(e) => {
+            // If the input value is outside the allowed range, prevent further input
+            if (e.target.value < 1) e.target.value = 1;
+            if (e.target.value > 99) e.target.value = 99;
+          }}
+          style={{ width: "50px", marginLeft: "10px" }}
+        />
       </div>
       <div>
         <label>
