@@ -27,23 +27,31 @@ const RegistrationForm = () => {
     e.preventDefault();
     try {
       const userData = { user: formData };
-      const data = await api.signup(userData);
+      const response = await api.signup(userData);
+
+      // Check if the response is OK
+      const data = await response.json();
+
       console.log(data);
 
-      if (data.success) {
+      if (response.ok && data.success) {
+        // Success logic
         setSuccessMessage(data.message);
         setError(null);
+
         // Redirect to login page
         setTimeout(() => {
-          console.log("navigating to login");
+          console.log("Navigating to login");
           navigate("/login");
-        }, 1000); // Redirect after 2 seconds
+        }, 1000); // Redirect after 1 second
       } else {
-        setError(data.error);
+        // If response is not successful, handle the error array
+        setError(data.error.join(", ")); // Join errors into a single string
         setSuccessMessage(null);
       }
     } catch (error) {
-      setError("An unexpected error occurred");
+      console.log("Error caught:", error);
+      setError("There was an error with the registration process.");
       setSuccessMessage(null);
     }
   };

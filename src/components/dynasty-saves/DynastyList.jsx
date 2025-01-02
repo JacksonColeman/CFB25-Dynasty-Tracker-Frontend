@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDynasty } from "../../contexts/DynastyContext";
+import DynastyListItem from "./DynastyListItem";
 
 const DynastyList = () => {
   const [newDynastyName, setNewDynastyName] = useState("");
-  const { dynasties, currentDynasty, loading, loadDynasties, setActive } =
-    useDynasty();
+  const {
+    dynasties,
+    currentDynasty,
+    loading,
+    loadDynasties,
+    setActive,
+    editDynasty,
+    deleteDynasty,
+  } = useDynasty();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,38 +77,7 @@ const DynastyList = () => {
         ) : (
           <div className="grid gap-4">
             {dynasties.map((dynasty) => (
-              <div
-                key={dynasty.id}
-                className={`border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
-                  currentDynasty?.id === dynasty.id
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200"
-                }`}
-                onClick={() => handleDynastySelect(dynasty.id)}
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p
-                      className={
-                        currentDynasty?.id === dynasty.id ? "bold" : "nah"
-                      }
-                    >
-                      {dynasty.dynasty_name} • {dynasty.school_name} •{" "}
-                      {dynasty.year}{" "}
-                      {currentDynasty?.id === dynasty.id ? "Active" : null}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Optional: Add dynasty stats/summary here */}
-                {dynasty.stats && (
-                  <div className="mt-2 grid grid-cols-3 gap-4 text-sm text-gray-600">
-                    <div>Players: {dynasty.stats.player_count}</div>
-                    <div>Recruits: {dynasty.stats.recruit_count}</div>
-                    <div>Season: {dynasty.stats.current_season}</div>
-                  </div>
-                )}
-              </div>
+              <DynastyListItem dynasty={dynasty} key={dynasty.id} />
             ))}
           </div>
         )}

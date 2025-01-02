@@ -4,7 +4,9 @@ const handleResponse = async (response) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "An error occurred");
+    console.log("error caught in api module");
+    // console.log(response.json());
+    throw new Error(data.error || "An error occurred");
   }
 
   return data;
@@ -21,7 +23,7 @@ export const api = {
       },
       credentials: "include",
       body: JSON.stringify(userData),
-    }).then(handleResponse),
+    }),
 
   login: (credentials) =>
     fetch(`${API_BASE}/session`, {
@@ -82,10 +84,20 @@ export const api = {
   updatePlayer: (id, data) =>
     fetch(`${API_BASE}/players/${id}`, {
       method: "PATCH",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     }),
   deletePlayer: (id) =>
     fetch(`${API_BASE}/players/${id}`, { method: "DELETE" }),
+
+  createPlayer: (data) =>
+    fetch(`${API_BASE}/players/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }),
 
   // Recruits
   getRecruits: () => fetch(`${API_BASE}/dynasties/current/recruits`),

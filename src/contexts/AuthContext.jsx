@@ -3,6 +3,27 @@ import { api } from "../api";
 
 const AuthContext = createContext(null);
 
+// export const AuthProvider = ({ children }) => {
+//   const [user, setUser] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   useEffect(() => {
+//     const checkAuth = async () => {
+//       try {
+//         const userData = await api.getCurrentUser();
+//         setUser(userData);
+//       } catch (err) {
+//         setUser(null);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     checkAuth();
+//   }, []);
+// };
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,11 +49,10 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       const userData = await api.login(credentials);
-      console.log(userData);
       setUser(userData.user);
     } catch (err) {
-      setError(err.message);
-      throw err;
+      setError(err.message || "An error occurred during login.");
+      throw err; // Rethrow the error if you want to propagate it further
     }
   };
 
@@ -47,6 +67,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const resetError = () => {
+    setError(null); // Assuming 'setError' is used to handle the authError
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -55,6 +79,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         loading,
         error,
+        resetError,
         isAuthenticated: !!user,
       }}
     >

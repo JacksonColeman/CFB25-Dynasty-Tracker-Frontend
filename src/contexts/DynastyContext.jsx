@@ -13,7 +13,6 @@ export const DynastyProvider = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    console.log("DynastyContext: useEffect");
     if (!isAuthenticated) {
       setLoading(true);
       setCurrentDynasty(null);
@@ -38,9 +37,6 @@ export const DynastyProvider = ({ children }) => {
           dynastiesResponse.json(),
         ]);
 
-        console.log("Current dynasty data");
-        console.log(currentDynastyData);
-
         // Check if the current dynasty data is valid before setting the state
         if (currentDynastyData && currentDynastyData.id) {
           setCurrentDynasty(currentDynastyData);
@@ -50,6 +46,7 @@ export const DynastyProvider = ({ children }) => {
 
         setDynasties(dynastiesData);
       } catch (error) {
+        console.log("ERROR IN DYNASTYCONTEXT USE EFFECT");
         console.error("Error loading dynasty data:", error);
         setCurrentDynasty(null);
         setDynasties([]);
@@ -62,13 +59,12 @@ export const DynastyProvider = ({ children }) => {
   }, [isAuthenticated]);
 
   const loadDynasties = async () => {
-    console.log("DynastyContext: loadDynasties");
     try {
       const response = await api.getDynasties();
       const data = await response.json();
       setDynasties(data);
     } catch (error) {
-      console.error("Error loading dynasties:", error);
+      console.log("ERROR IN LOAD DYNASTIES");
       setCurrentDynasty(null);
       setDynasties([]);
       throw error;
@@ -76,16 +72,13 @@ export const DynastyProvider = ({ children }) => {
   };
 
   const setActive = async (id) => {
-    console.log("DynastyContext: setActive");
     try {
       await api.setCurrentDynasty(id);
       const response = await api.getCurrentDynasty();
-      console.log(response);
       const dynasty = await response.json();
       console.log(dynasty);
       setCurrentDynasty(dynasty);
     } catch (error) {
-      console.error("Error setting active dynasty:", error);
       throw error;
     }
   };
@@ -94,13 +87,21 @@ export const DynastyProvider = ({ children }) => {
     try {
       const response = await api.createDynasty(data);
 
-      if (!response.ok) throw new Error("Failed to create dynasty");
+      if (!response.ok) {
+        // Parse the response body for error details
+        const errorData = await response.json();
+        const errorMessage = errorData.error || "Failed to create dynasty";
+        throw new Error(errorMessage); // Throw the specific error
+      }
 
       await loadDynasties();
-      return await response.json();
+      return await response.json(); // Return parsed success response
     } catch (error) {
-      console.error("Error creating dynasty:", error);
-      throw error;
+      if (error.response) {
+        // Handle additional error structure if present
+        console.error("Error response:", error.response);
+      }
+      throw error; // Re-throw the error for the caller to handle
     }
   };
 
@@ -180,6 +181,9 @@ export const DynastyProvider = ({ children }) => {
       setAdvancingYear(false);
     }
   };
+
+  // Get roster players
+  // Get recruits
 
   return (
     <DynastyContext.Provider

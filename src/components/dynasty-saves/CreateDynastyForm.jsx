@@ -1,50 +1,49 @@
 import React, { useState } from "react";
 import { schools } from "../../../public/schools";
+import { useDynasty } from "../../contexts/DynastyContext";
 
 const CreateDynastyForm = () => {
-  // State to hold form values
-  const [dynastyName, setDynastyName] = useState("");
-  const [schoolName, setSchoolName] = useState("");
-  const [year, setYear] = useState(2024); // Default year
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
+  const [formData, setFormData] = useState({
+    dynastyName: "",
+    schoolName: "",
+    year: 2024,
+  });
+  const [message, setMessage] = useState({ type: null, text: "" });
+  const { createDynasty } = useDynasty();
 
-  // Handle form submission
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = {
-      dynasty_name: dynastyName,
-      school_name: schoolName,
-      year: year,
-    };
-
     try {
-      const response = await fetch("/api/dynasties", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      const result = await createDynasty({
+        dynasty_name: formData.dynastyName,
+        school_name: formData.schoolName,
+        year: formData.year,
       });
 
-      if (response.ok) {
-        setSuccessMessage("Dynasty created successfully!");
-        setError(null); // Clear any previous error messages
-        // Optionally clear form fields after successful submission
-        setDynastyName("");
-        setSchoolName("");
-        setYear(2024);
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || "Something went wrong.");
-        setSuccessMessage(null); // Clear any previous success message
-      }
-    } catch (err) {
-      setError("An error occurred. Please try again.");
-      setSuccessMessage(null);
+      setMessage({ type: "success", text: "Dynasty created successfully!" });
+      setFormData({ dynastyName: "", schoolName: "", year: 2024 });
+    } catch (error) {
+      // Handle API error responses
+      const errorMessage =
+        error.response?.error?.join(", ") || // Combine error messages if an array
+        error.message || // Fallback to custom error message
+        "An error occurred. Please try again."; // Default fallback
+
+      setMessage({ type: "error", text: errorMessage });
     }
   };
+
+  const renderOptions = (options) =>
+    options.map((option, index) => (
+      <option key={index} value={option}>
+        {option}
+      </option>
+    ));
 
   return (
     <div>
@@ -55,8 +54,8 @@ const CreateDynastyForm = () => {
           <input
             type="text"
             id="dynastyName"
-            value={dynastyName}
-            onChange={(e) => setDynastyName(e.target.value)}
+            value={formData.dynastyName}
+            onChange={handleChange}
             required
           />
         </div>
@@ -64,35 +63,25 @@ const CreateDynastyForm = () => {
           <label htmlFor="schoolName">School Name</label>
           <select
             id="schoolName"
-            value={schoolName}
-            onChange={(e) => setSchoolName(e.target.value)}
+            value={formData.schoolName}
+            onChange={handleChange}
             required
           >
             <option value="" disabled>
               Select a school
             </option>
-            {schools.map((school, index) => (
-              <option key={index} value={school}>
-                {school}
-              </option>
-            ))}
+            {renderOptions(schools)}
           </select>
         </div>
         <div>
           <label htmlFor="year">Year</label>
           <select
             id="year"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
+            value={formData.year}
+            onChange={handleChange}
             required
           >
-            {Array.from({ length: 31 }, (_, i) => 2024 + i).map(
-              (yearOption) => (
-                <option key={yearOption} value={yearOption}>
-                  {yearOption}
-                </option>
-              )
-            )}
+            {renderOptions(Array.from({ length: 31 }, (_, i) => 2024 + i))}
           </select>
         </div>
         <div>
@@ -100,8 +89,11 @@ const CreateDynastyForm = () => {
         </div>
       </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+      {message.text && (
+        <p style={{ color: message.type === "success" ? "green" : "red" }}>
+          {message.text}
+        </p>
+      )}
     </div>
   );
 };

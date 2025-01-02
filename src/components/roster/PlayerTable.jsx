@@ -1,34 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useRoster } from "../../contexts/RosterContext";
 import "./styles.css"; // Make sure the path matches where your CSS file is located
 
-const PlayerTable = () => {
-  const [players, setPlayers] = useState([]);
+const PlayerTable = ({ players }) => {
+  // const [players, setPlayers] = useState([]);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [error, setError] = useState(null);
+  const { deletePlayer, updatePlayer } = useRoster();
 
   // Fetch the players from the API
-  useEffect(() => {
-    const fetchPlayers = async () => {
-      console.log("Fetching players...");
-      try {
-        const response = await fetch("api/dynasties/current/players");
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Fetched players:", data);
-          setPlayers(data);
-        } else {
-          const errorData = await response.json();
-          console.log("Error fetching players:", errorData);
-          setError(errorData.error || "Failed to fetch players.");
-        }
-      } catch (err) {
-        console.log("Error occurred while fetching players:", err);
-        setError("An error occurred. Please try again.");
-      }
-    };
-
-    fetchPlayers();
-  }, []);
 
   // Handle editing a player's information
   const handleEdit = (player) => {
@@ -52,58 +32,46 @@ const PlayerTable = () => {
     };
 
     console.log("Updating player:", updatedPlayer);
-
     try {
-      const response = await fetch(`api/players/${playerId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ player: updatedPlayer }),
-      });
-
-      if (response.ok) {
-        const updatedData = await response.json();
-        console.log("Updated player:", updatedData);
-        setPlayers((prevPlayers) =>
-          prevPlayers.map((player) =>
-            player.id === updatedData.id ? updatedData : player
-          )
-        );
-        setEditingPlayer(null);
-      } else {
-        const errorData = await response.json();
-        console.log("Error updating player:", errorData);
-        setError(errorData.error || "Failed to update player.");
-      }
+      updatePlayer(playerId, { player: updatedPlayer });
+      setEditingPlayer(null);
     } catch (err) {
-      console.log("Error occurred while updating player:", err);
-      setError("An error occurred. Please try again.");
+      console.log(err);
     }
+
+    // try {
+    //   const response = await fetch(`api/players/${playerId}`, {
+    //     method: "PATCH",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ player: updatedPlayer }),
+    //   });
+
+    //   if (response.ok) {
+    //     const updatedData = await response.json();
+    //     console.log("Updated player:", updatedData);
+    //     setPlayers((prevPlayers) =>
+    //       prevPlayers.map((player) =>
+    //         player.id === updatedData.id ? updatedData : player
+    //       )
+    //     );
+    //     setEditingPlayer(null);
+    //   } else {
+    //     const errorData = await response.json();
+    //     console.log("Error updating player:", errorData);
+    //     setError(errorData.error || "Failed to update player.");
+    //   }
+    // } catch (err) {
+    //   console.log("Error occurred while updating player:", err);
+    //   setError("An error occurred. Please try again.");
+    // }
   };
 
   // Handle deleting a player
   const handleDelete = async (playerId) => {
     console.log("Deleting player with ID:", playerId);
-    try {
-      const response = await fetch(`api/players/${playerId}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setPlayers((prevPlayers) =>
-          prevPlayers.filter((player) => player.id !== playerId)
-        );
-        console.log("Deleted player with ID:", playerId);
-      } else {
-        const errorData = await response.json();
-        console.log("Error deleting player:", errorData);
-        setError(errorData.error || "Failed to delete player.");
-      }
-    } catch (err) {
-      console.log("Error occurred while deleting player:", err);
-      setError("An error occurred. Please try again.");
-    }
+    deletePlayer(playerId);
   };
 
   const advanceClassYears = async () => {
@@ -130,6 +98,10 @@ const PlayerTable = () => {
       alert("Error calling the API: " + error);
     }
   };
+
+  if (!players || players.length == 0) {
+    return <div>No players</div>;
+  }
 
   return (
     <div>

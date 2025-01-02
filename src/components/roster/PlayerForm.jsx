@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { positions } from "../../../public/positions";
+import { useRoster } from "../../contexts/RosterContext";
 
 const PlayerForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -11,6 +12,7 @@ const PlayerForm = () => {
   const [devTrait, setDevTrait] = useState("");
   const [redshirted, setRedshirted] = useState(false);
   const [currentRedshirt, setCurrentRedshirt] = useState(false);
+  const { createPlayer } = useRoster();
 
   const handlePositionChange = (e) => {
     setPosition(e.target.value);
@@ -35,26 +37,27 @@ const PlayerForm = () => {
       current_redshirt: currentRedshirt,
     };
 
-    try {
-      const response = await fetch("/api/players", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(playerData),
-      });
+    // try {
+    createPlayer(playerData);
+    //   const response = await fetch("/api/players", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(playerData),
+    //   });
 
-      if (response.ok) {
-        const data = await response.json();
-        alert("Player created successfully!");
-      } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.error}`);
-      }
-    } catch (err) {
-      console.error("Error creating player:", err);
-      alert("An error occurred while creating the player.");
-    }
+    //   if (response.ok) {
+    //     const data = await response.json();
+    //     alert("Player created successfully!");
+    //   } else {
+    //     const errorData = await response.json();
+    //     alert(`Error: ${errorData.error}`);
+    //   }
+    // } catch (err) {
+    //   console.error("Error creating player:", err);
+    //   alert("An error occurred while creating the player.");
+    // }
   };
 
   return (
@@ -171,6 +174,7 @@ const PlayerForm = () => {
             id="redshirted"
             checked={redshirted}
             onChange={(e) => setRedshirted(e.target.checked)}
+            disabled={currentRedshirt}
           />
         </div>
 
@@ -181,6 +185,7 @@ const PlayerForm = () => {
             id="currentRedshirt"
             checked={currentRedshirt}
             onChange={(e) => setCurrentRedshirt(e.target.checked)}
+            disabled={redshirted}
           />
         </div>
 
