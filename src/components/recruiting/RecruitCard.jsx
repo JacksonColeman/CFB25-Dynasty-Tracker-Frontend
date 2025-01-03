@@ -2,30 +2,37 @@ import React, { useState } from "react";
 import { FaStar, FaGem, FaRegTimesCircle, FaEllipsisV } from "react-icons/fa"; // Import the star icon
 import "./recruitcard.css";
 import RecruitCardDetail from "./RecruitCardDetail";
+import EditRecruitForm from "./EditRecruitForm";
+import { useRoster } from "../../contexts/RosterContext";
+import AddToRosterForm from "./AddToRosterForm";
 
-const RecruitCard = ({ recruit, onDeleteRecruit }) => {
-  const [formData, setFormData] = useState({
-    first_name: recruit.first_name,
-    last_name: recruit.last_name,
-    recruit_class: recruit.recruit_class,
-    star_rating: recruit.star_rating,
-    position: recruit.position,
-    archetype: recruit.archetype,
-    athlete: recruit.athlete,
-    scouted: recruit.scouted,
-    gem: recruit.gem,
-    bust: recruit.bust,
-    recruiting_stage: recruit.recruiting_stage,
-    notes: recruit.notes,
-  });
+const RecruitCard = ({ recruit }) => {
+  // const [formData, setFormData] = useState({
+  //   first_name: recruit.first_name,
+  //   last_name: recruit.last_name,
+  //   recruit_class: recruit.recruit_class,
+  //   star_rating: recruit.star_rating,
+  //   position: recruit.position,
+  //   archetype: recruit.archetype,
+  //   athlete: recruit.athlete,
+  //   scouted: recruit.scouted,
+  //   gem: recruit.gem,
+  //   bust: recruit.bust,
+  //   recruiting_stage: recruit.recruiting_stage,
+  //   notes: recruit.notes,
+  // });
 
-  const handleDelete = () => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete ${recruit.first_name} ${recruit.last_name}?`
-      )
-    ) {
-      onDeleteRecruit(recruit.id);
+  const [showNotes, setShowNotes] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [addingToRoster, setAddingToRoster] = useState(false);
+
+  const { deleteRecruit } = useRoster();
+
+  const handleDelete = async () => {
+    try {
+      await deleteRecruit(recruit.id);
+    } catch (err) {
+      console.log(err);
     }
   };
   // Handle updating an individual field (PATCH request)
@@ -39,6 +46,27 @@ const RecruitCard = ({ recruit, onDeleteRecruit }) => {
     return <div className="stars">{stars}</div>;
   };
 
+  const saveEdit = () => {
+    setEditing(false);
+  };
+
+  const closeAddToRoster = () => {
+    setAddingToRoster(false);
+  };
+
+  if (addingToRoster) {
+    return <AddToRosterForm recruit={recruit} closeForm={closeAddToRoster} />;
+  }
+
+  if (editing) {
+    return (
+      <div>
+        <EditRecruitForm recruit={recruit} saveEdit={saveEdit} />
+        {/* <button onClick={() => saveEdit()}>save</button> */}
+      </div>
+    );
+  }
+
   return (
     <div className="recruit-card-container">
       <div>
@@ -49,7 +77,7 @@ const RecruitCard = ({ recruit, onDeleteRecruit }) => {
         </div>
         <div className="recruit-card-c1-r2">
           <span className="star-rating">
-            {renderStarRating(formData.star_rating)}
+            {renderStarRating(recruit.star_rating)}
           </span>
           <span>{recruit.gem ? <FaGem color="green" /> : null}</span>
           <span>{recruit.bust ? <FaRegTimesCircle color="red" /> : null}</span>
@@ -77,18 +105,21 @@ const RecruitCard = ({ recruit, onDeleteRecruit }) => {
       <div className="options-ellipsis">
         <FaEllipsisV fontSize={25} />
       </div>
-      {/* <div className="recruit-card-c4-r1">
-        <button>Edit</button>
-      </div> */}
+      <div className="recruit-card-c4-r1">
+        <button onClick={() => setEditing(true)}>Edit</button>
+      </div>
       <div className="recruit-card-c4-r2">
         <button onClick={handleDelete}>Delete</button>
       </div>
-      {/* <div className="recruit-card-c5-r1">
-        <button>Add to Roster</button>
+      <div className="recruit-card-c5-r1">
+        <button onClick={() => setAddingToRoster(!addingToRoster)}>
+          Add to Roster
+        </button>
       </div>
-      <div className="recruit-card-c5-r2">
-        <button>Show More</button>
-      </div> */}
+      {recruit.notes ? (
+        <button onClick={() => setShowNotes(!showNotes)}>Toggle Notes</button>
+      ) : null}
+      {showNotes && recruit.notes ? <div>{recruit.notes}</div> : null}
     </div>
   );
 };

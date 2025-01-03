@@ -104,6 +104,7 @@ export const api = {
   updateRecruit: (id, data) =>
     fetch(`${API_BASE}/recruits/${id}`, {
       method: "PATCH",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     }),
   deleteRecruit: (id) =>
@@ -111,6 +112,32 @@ export const api = {
   convertToPlayer: (id, data) =>
     fetch(`${API_BASE}/recruits/${id}/convert_to_player`, {
       method: "PATCH",
+      body: JSON.stringify(data),
+    }),
+  createRecruit: (data) =>
+    fetch(`${API_BASE}/recruits/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }),
+
+  addRecruitToRoster: (id, data) =>
+    fetch(`${API_BASE}/recruits/${id}/convert_to_player`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }),
+
+  bulkAddRecruitsToRoster: (data) =>
+    fetch(`${API_BASE}/dynasties/current/bulk_convert_to_players`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     }),
 
@@ -130,6 +157,14 @@ export const api = {
 
   clearRoster: () =>
     fetch(`${API_BASE}/dynasties/current/clear_roster`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }),
+
+  clearRecruits: () =>
+    fetch(`${API_BASE}/dynasties/current/clear_recruits`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

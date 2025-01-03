@@ -74,28 +74,40 @@ const PlayerDisplay = ({ players }) => {
 
   return (
     <div>
-      <div>
-        <label htmlFor="sort-by">Sort By: </label>
-        <select id="sort-by" value={sortAttribute} onChange={handleSortChange}>
-          <option value="position">Position</option>
-          <option value="overall">Overall</option>
-          <option value="last_name">Name</option>
-        </select>
-      </div>
+      {players.length != 0 ? (
+        <div>
+          <div>
+            <label htmlFor="sort-by">Sort By: </label>
+            <select
+              id="sort-by"
+              value={sortAttribute}
+              onChange={handleSortChange}
+            >
+              <option value="position">Position</option>
+              <option value="overall">Overall</option>
+              <option value="last_name">Name</option>
+            </select>
+          </div>
 
-      <div>
-        <label htmlFor="filter">Filter By: </label>
-        <select id="filter" value={filterValue} onChange={handleFilterChange}>
-          <option value="">All Players</option>
-          {dropdownOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
+          <div>
+            <label htmlFor="filter">Filter By: </label>
+            <select
+              id="filter"
+              value={filterValue}
+              onChange={handleFilterChange}
+            >
+              <option value="">All Players</option>
+              {dropdownOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-      <button onClick={handleToggleRosterView}>Toggle View</button>
+          <button onClick={handleToggleRosterView}>Toggle View</button>
+        </div>
+      ) : null}
 
       {rosterView === "list" ? (
         <PlayerList players={sortedPlayers} />

@@ -167,42 +167,6 @@ const BulkUpdatePlayersModal = ({
                   max="99"
                 />
               </div>
-
-              {/* <div className="mt-2">
-                <label className="block font-medium">Position</label>
-                <select
-                  value={player.position}
-                  onChange={(e) =>
-                    handlePositionChange(player.id, e.target.value)
-                  }
-                  className="w-full px-2 py-1 border rounded"
-                >
-                  {Object.keys(positions).map((positionKey) => (
-                    <option key={positionKey} value={positionKey}>
-                      {positionKey}
-                    </option>
-                  ))}
-                </select>
-              </div> */}
-              {/* 
-              <div className="mt-2">
-                <label htmlFor="archetype">Archetype:</label>
-                <select
-                  id="archetype"
-                  name="archetype"
-                  value={player.archetype}
-                  onChange={(e) =>
-                    handleArchetypeChange(player.id, e.target.value)
-                  }
-                  required
-                >
-                  {positions[player.position].map((arcOption) => (
-                    <option key={arcOption} value={arcOption}>
-                      {arcOption}
-                    </option>
-                  ))}
-                </select>
-              </div> */}
             </div>
           ))}
         </div>

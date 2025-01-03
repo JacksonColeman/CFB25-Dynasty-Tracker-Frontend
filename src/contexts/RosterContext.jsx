@@ -6,6 +6,7 @@ const RosterContext = createContext(null);
 
 export const RosterProvider = ({ children }) => {
   const [players, setPlayers] = useState([]);
+  const [recruits, setRecruits] = useState([]);
   const { currentDynasty } = useDynasty();
 
   useEffect(() => {
@@ -20,7 +21,14 @@ export const RosterProvider = ({ children }) => {
       setPlayers(players);
     };
 
+    const initializeRecruits = async () => {
+      const response = await api.getRecruits();
+      const recruits = await response.json();
+      setRecruits(recruits);
+    };
+
     initializeRoster();
+    initializeRecruits();
   }, [currentDynasty]);
 
   const loadPlayers = async () => {
@@ -29,11 +37,29 @@ export const RosterProvider = ({ children }) => {
     setPlayers(players);
   };
 
+  const loadRecruits = async () => {
+    const response = await api.getRecruits();
+    const recruits = await response.json();
+    setRecruits(recruits);
+  };
+
   const deletePlayer = async (playerId) => {
     try {
       await api.deletePlayer(playerId);
       setPlayers((current) =>
         current.filter((player) => player.id !== playerId)
+      );
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
+  const deleteRecruit = async (recruitId) => {
+    try {
+      await api.deleteRecruit(recruitId);
+      setRecruits((current) =>
+        current.filter((recruit) => recruit.id !== recruitId)
       );
     } catch (err) {
       console.log(err);
@@ -54,6 +80,19 @@ export const RosterProvider = ({ children }) => {
     }
   };
 
+  const createRecruit = async (data) => {
+    try {
+      const response = await api.createRecruit(data);
+      const newRecruit = await response.json();
+      console.log("creating player in context");
+      console.log(newRecruit);
+      setRecruits((current) => [...current, newRecruit]);
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
   const updatePlayer = async (id, data) => {
     try {
       const response = await api.updatePlayer(id, data);
@@ -64,6 +103,23 @@ export const RosterProvider = ({ children }) => {
       // Update the players state with the updated player
       setPlayers((current) =>
         current.map((player) => (player.id === id ? updatedPlayer : player))
+      );
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
+  const updateRecruit = async (id, data) => {
+    console.log("calling updateRecruit in rosterContext");
+    try {
+      const response = await api.updateRecruit(id, data);
+      const updatedRecruit = await response.json();
+      console.log(updatedRecruit);
+
+      // Update the players state with the updated player
+      setRecruits((current) =>
+        current.map((recruit) => (recruit.id === id ? updatedRecruit : recruit))
       );
     } catch (err) {
       console.log(err);
@@ -103,6 +159,16 @@ export const RosterProvider = ({ children }) => {
     }
   };
 
+  const clearRecruits = async () => {
+    try {
+      await api.clearRecruits();
+      setRecruits([]);
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
   const bulkUpdatePlayers = async (data) => {
     try {
       const response = await api.bulkUpdatePlayers(data);
@@ -129,6 +195,28 @@ export const RosterProvider = ({ children }) => {
     }
   };
 
+  const addRecruitToRoster = async (id, data) => {
+    try {
+      const response = await api.addRecruitToRoster(id, data);
+      await loadPlayers();
+      await loadRecruits();
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
+  const bulkAddRecruitsToRoster = async (data) => {
+    try {
+      await api.bulkAddRecruitsToRoster(data);
+      await loadPlayers();
+      await loadRecruits();
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
   return (
     <RosterContext.Provider
       value={{
@@ -140,6 +228,15 @@ export const RosterProvider = ({ children }) => {
         clearRoster,
         bulkUpdatePlayers,
         bulkUpdateRedshirt,
+
+        recruits,
+        loadRecruits,
+        deleteRecruit,
+        createRecruit,
+        updateRecruit,
+        clearRecruits,
+        addRecruitToRoster,
+        bulkAddRecruitsToRoster,
       }}
     >
       {children}

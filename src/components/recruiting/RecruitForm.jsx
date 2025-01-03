@@ -1,64 +1,71 @@
 import React, { useState } from "react";
 import { positions } from "../../../public/positions";
+import { useRoster } from "../../contexts/RosterContext";
 
 const RecruitForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [starRating, setStarRating] = useState(0);
-  const [recruitClass, setRecruitClass] = useState("High School");
-  const [position, setPosition] = useState("");
-  const [archetype, setArchetype] = useState("");
-  const [athlete, setAthlete] = useState(false);
-  const [scouted, setScouted] = useState(false);
-  const [gem, setGem] = useState(false);
-  const [bust, setBust] = useState(false);
-  const [recruitingStage, setRecruitingStage] = useState("");
-  const [visitWeek, setVisitWeek] = useState(0);
-  const [notes, setNotes] = useState("");
-
-  const handlePositionChange = (e) => {
-    setPosition(e.target.value);
-    setArchetype(""); // Reset archetype when position changes
+  const defaultValues = {
+    firstName: "",
+    lastName: "",
+    starRating: 0,
+    recruitClass: "High School",
+    position: "",
+    archetype: "",
+    athlete: false,
+    scouted: false,
+    gem: false,
+    bust: false,
+    recruitingStage: "",
+    notes: "",
   };
 
-  const potentialArchetypes = position ? positions[position] : [];
+  const [formValues, setFormValues] = useState(defaultValues);
+
+  const { createRecruit } = useRoster();
+
+  const handleChange = (e) => {
+    const { id, value, type, checked } = e.target;
+    setFormValues((prev) => ({
+      ...prev,
+      [id]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handlePositionChange = (e) => {
+    const { value } = e.target;
+    setFormValues((prev) => ({
+      ...prev,
+      position: value,
+      archetype: "", // Reset archetype when position changes
+    }));
+  };
+
+  const potentialArchetypes = formValues.position
+    ? positions[formValues.position]
+    : [];
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const recruitData = {
-      first_name: firstName,
-      last_name: lastName,
-      recruit_class: recruitClass,
-      star_rating: starRating,
-      position: position,
-      archetype: archetype,
-      athlete: athlete,
-      scouted: scouted,
-      gem: gem,
-      bust: bust,
-      recruiting_stage: recruitingStage,
-      // visit_week: visitWeek,
-      notes: notes,
+      first_name: formValues.firstName,
+      last_name: formValues.lastName,
+      recruit_class: formValues.recruitClass,
+      position: formValues.position,
+      archetype: formValues.archetype,
+      star_rating: formValues.starRating,
+      athlete: formValues.athlete,
+      scouted: formValues.scouted,
+      gem: formValues.gem,
+      bust: formValues.bust,
+      recruiting_stage: formValues.recruitingStage,
+      notes: formValues.notes,
     };
 
     try {
-      const response = await fetch("/api/recruits", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(recruitData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        alert("Recruit created successfully!");
-      } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.error}`);
-      }
+      await createRecruit(recruitData);
+      // alert("Recruit created successfully!");
+      setFormValues(defaultValues); // Reset form after submission
     } catch (err) {
       console.error("Error creating recruit:", err);
       alert("An error occurred while creating the recruit.");
@@ -74,8 +81,8 @@ const RecruitForm = () => {
           <input
             type="text"
             id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={formValues.firstName}
+            onChange={handleChange}
             required
           />
         </div>
@@ -85,8 +92,8 @@ const RecruitForm = () => {
           <input
             type="text"
             id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={formValues.lastName}
+            onChange={handleChange}
             required
           />
         </div>
@@ -95,8 +102,8 @@ const RecruitForm = () => {
           <label htmlFor="recruitClass">Recruit Class:</label>
           <select
             id="recruitClass"
-            value={recruitClass}
-            onChange={(e) => setRecruitClass(e.target.value)}
+            value={formValues.recruitClass}
+            onChange={handleChange}
             required
           >
             <option value="High School">High School</option>
@@ -112,8 +119,8 @@ const RecruitForm = () => {
           <label htmlFor="starRating">Star Rating:</label>
           <select
             id="starRating"
-            value={starRating}
-            onChange={(e) => setStarRating(Number(e.target.value))}
+            value={formValues.starRating}
+            onChange={handleChange}
             required
           >
             <option value="0" disabled>
@@ -130,18 +137,17 @@ const RecruitForm = () => {
         <div>
           <label htmlFor="position">Position:</label>
           <select
-            type="text"
             id="position"
-            value={position}
+            value={formValues.position}
             onChange={handlePositionChange}
             required
           >
             <option value="" disabled>
               Select Position
             </option>
-            {Object.keys(positions).map((position) => (
-              <option key={position} value={position}>
-                {position}
+            {Object.keys(positions).map((pos) => (
+              <option key={pos} value={pos}>
+                {pos}
               </option>
             ))}
           </select>
@@ -151,17 +157,17 @@ const RecruitForm = () => {
           <label htmlFor="archetype">Archetype:</label>
           <select
             id="archetype"
-            value={archetype}
-            onChange={(e) => setArchetype(e.target.value)}
+            value={formValues.archetype}
+            onChange={handleChange}
             required
-            disabled={!position} // Disable if no position is selected
+            disabled={!formValues.position} // Disable if no position is selected
           >
             <option value="" disabled>
               Select Archetype
             </option>
-            {potentialArchetypes.map((archetype) => (
-              <option key={archetype} value={archetype}>
-                {archetype}
+            {potentialArchetypes.map((arc) => (
+              <option key={arc} value={arc}>
+                {arc}
               </option>
             ))}
           </select>
@@ -172,8 +178,8 @@ const RecruitForm = () => {
           <input
             type="checkbox"
             id="athlete"
-            checked={athlete}
-            onChange={(e) => setAthlete(e.target.checked)}
+            checked={formValues.athlete}
+            onChange={handleChange}
           />
         </div>
 
@@ -182,8 +188,8 @@ const RecruitForm = () => {
           <input
             type="checkbox"
             id="scouted"
-            checked={scouted}
-            onChange={(e) => setScouted(e.target.checked)}
+            checked={formValues.scouted}
+            onChange={handleChange}
           />
         </div>
 
@@ -192,9 +198,9 @@ const RecruitForm = () => {
           <input
             type="checkbox"
             id="gem"
-            checked={gem}
-            onChange={(e) => setGem(e.target.checked)}
-            disabled={!scouted || bust}
+            checked={formValues.gem}
+            onChange={handleChange}
+            disabled={!formValues.scouted || formValues.bust}
           />
         </div>
 
@@ -203,9 +209,9 @@ const RecruitForm = () => {
           <input
             type="checkbox"
             id="bust"
-            checked={bust}
-            onChange={(e) => setBust(e.target.checked)}
-            disabled={!scouted || gem}
+            checked={formValues.bust}
+            onChange={handleChange}
+            disabled={!formValues.scouted || formValues.gem}
           />
         </div>
 
@@ -213,10 +219,13 @@ const RecruitForm = () => {
           <label htmlFor="recruitingStage">Recruiting Stage:</label>
           <select
             id="recruitingStage"
-            value={recruitingStage}
-            onChange={(e) => setRecruitingStage(e.target.value)}
+            value={formValues.recruitingStage}
+            onChange={handleChange}
+            required
           >
-            <option value="">Select</option>
+            <option value="" disabled>
+              Select
+            </option>
             <option value="Open">Open</option>
             <option value="Top 8">Top 8</option>
             <option value="Top 5">Top 5</option>
@@ -225,22 +234,12 @@ const RecruitForm = () => {
           </select>
         </div>
 
-        {/* <div>
-          <label htmlFor="visitWeek">Visit Week:</label>
-          <input
-            type="number"
-            id="visitWeek"
-            value={visitWeek}
-            onChange={(e) => setVisitWeek(e.target.value)}
-          />
-        </div> */}
-
         <div>
           <label htmlFor="notes">Notes:</label>
           <textarea
             id="notes"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            value={formValues.notes}
+            onChange={handleChange}
           />
         </div>
 

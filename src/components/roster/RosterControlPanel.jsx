@@ -60,16 +60,22 @@ const RosterControlPanel = ({ players }) => {
         Create Players?
       </button>
       <button onClick={handleAdvanceYear}>Advance Year</button>
-      <button onClick={handleClearGraduates}>
+      <button onClick={handleClearGraduates} disabled={players.length == 0}>
         {confirmClearGraduates ? "Confirm Clear Graduates?" : "Clear Graduates"}
       </button>
-      <button onClick={handleClearRoster}>
+      <button onClick={handleClearRoster} disabled={players.length == 0}>
         {confirmClearRoster ? "Confirm Clear Roster?" : "Clear Roster"}
       </button>
-      <button onClick={() => setIsModalOpen(true)}>
+      <button
+        onClick={() => setIsModalOpen(true)}
+        disabled={players.length == 0}
+      >
         Position Changes/Training Results
       </button>
-      <button onClick={() => setIsRedshirtModalOpen(true)}>
+      <button
+        onClick={() => setIsRedshirtModalOpen(true)}
+        disabled={players.length == 0}
+      >
         Manage Redshirts
       </button>
       <BulkUpdatePlayersModal
