@@ -14,6 +14,13 @@ import PrivateRoute from "./PrivateRoute";
 import LoginForm from "./components/login-signup/LoginForm";
 import RegistrationForm from "./components/login-signup/RegistrationForm";
 import { RosterProvider } from "./contexts/RosterContext";
+import EditDynastyPage from "./components/my-dynasty/EditDynastyPage";
+import PlayerForm from "./components/roster/PlayerForm";
+import { Navigate } from "react-router-dom";
+import PlayerDisplay from "./components/roster/PlayerDisplay";
+import ManageRedshirtsModal from "./components/roster/ManageRedshirtsModal";
+import BulkUpdatePlayersModal from "./components/roster/BulkUpdatePlayersModal";
+import EncourageTransferPage from "./components/roster/EncourageTransferPage";
 
 function App() {
   return (
@@ -48,12 +55,44 @@ function App() {
                     <RosterPage />
                   </PrivateRoute>
                 }
-              />
+              >
+                <Route path="create" element={<PlayerForm />} />
+                <Route
+                  path="training"
+                  element={
+                    <BulkUpdatePlayersModal
+                      key={1}
+                      readOnlyPositionArchetype={true}
+                    />
+                  }
+                />
+                <Route
+                  path="position-changes"
+                  element={<BulkUpdatePlayersModal key={2} />}
+                />
+                <Route path="redshirts" element={<ManageRedshirtsModal />} />
+                <Route
+                  path="players-leaving"
+                  element={
+                    <EncourageTransferPage sortDirectionAscending={false} />
+                  }
+                />
+                <Route path="cuts" element={<EncourageTransferPage />} />
+                <Route index element={<PlayerDisplay />} />
+              </Route>
               <Route
                 path="/recruiting"
                 element={
                   <PrivateRoute>
                     <RecruitingPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/mydynasty"
+                element={
+                  <PrivateRoute>
+                    <EditDynastyPage />
                   </PrivateRoute>
                 }
               />

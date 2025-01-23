@@ -99,6 +99,15 @@ export const api = {
       body: JSON.stringify(data),
     }),
 
+  deleteSelectedPlayers: (playerIds) =>
+    fetch(`${API_BASE}/dynasties/current/players`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ player_ids: playerIds }),
+    }),
+
   // Recruits
   getRecruits: () => fetch(`${API_BASE}/dynasties/current/recruits`),
   updateRecruit: (id, data) =>

@@ -182,6 +182,21 @@ export const RosterProvider = ({ children }) => {
     }
   };
 
+  const deletePlayers = async (playerIds) => {
+    try {
+      const response = await api.deleteSelectedPlayers(playerIds);
+      if (!response.ok) {
+        throw new Error("Failed to delete players");
+      }
+      // Optionally, reload the player list or perform any other post-deletion actions
+      await loadPlayers();
+      console.log("Players successfully deleted");
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
   const bulkUpdateRedshirt = async (data) => {
     try {
       const response = await api.bulkUpdateRedshirt(data);
@@ -224,6 +239,7 @@ export const RosterProvider = ({ children }) => {
         createPlayer,
         updatePlayer,
         deletePlayer,
+        deletePlayers,
         clearGraduates,
         clearRoster,
         bulkUpdatePlayers,

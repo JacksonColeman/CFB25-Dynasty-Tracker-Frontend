@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { positions } from "../../../public/positions";
-import "./styles.css";
+import { useRoster } from "../../contexts/RosterContext";
 
-const BulkUpdatePlayersModal = ({
-  players = [],
-  isOpen,
-  onClose,
-  updatePlayers,
-}) => {
+const BulkUpdatePlayersModal = ({ readOnlyPositionArchetype = false }) => {
   const [updatedPlayers, setUpdatedPlayers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const { players, bulkUpdatePlayers: updatePlayers } = useRoster();
 
   useEffect(() => {
     if (players) {
@@ -28,21 +25,36 @@ const BulkUpdatePlayersModal = ({
   }, [players]);
 
   const handleOverallChange = (playerId, newValue) => {
-    setUpdatedPlayers((current) =>
-      current.map((player) =>
+    setUpdatedPlayers((current) => {
+      const updated = current.map((player) =>
         player.id === playerId
           ? {
               ...player,
-              overall: Math.min(99, Math.max(1, parseInt(newValue) || 40)),
+              overall: Math.min(99, Math.max(40, parseInt(newValue) || 40)),
             }
           : player
-      )
-    );
+      );
+
+      // Check for changes
+      setIsDirty(
+        JSON.stringify(updated) !==
+          JSON.stringify(
+            players.map(({ id, overall, position, archetype }) => ({
+              id,
+              overall,
+              position,
+              archetype,
+            }))
+          )
+      );
+
+      return updated;
+    });
   };
 
   const handlePositionChange = (playerId, newValue) => {
-    setUpdatedPlayers((current) =>
-      current.map((player) =>
+    setUpdatedPlayers((current) => {
+      const updated = current.map((player) =>
         player.id === playerId
           ? {
               ...player,
@@ -50,27 +62,58 @@ const BulkUpdatePlayersModal = ({
               archetype: positions[newValue][0],
             }
           : player
-      )
-    );
+      );
+
+      // Check for changes
+      setIsDirty(
+        JSON.stringify(updated) !==
+          JSON.stringify(
+            players.map(({ id, overall, position, archetype }) => ({
+              id,
+              overall,
+              position,
+              archetype,
+            }))
+          )
+      );
+
+      return updated;
+    });
   };
 
   const handleArchetypeChange = (playerId, newValue) => {
-    setUpdatedPlayers((current) =>
-      current.map((player) =>
+    setUpdatedPlayers((current) => {
+      const updated = current.map((player) =>
         player.id === playerId
           ? {
               ...player,
               archetype: newValue,
             }
           : player
-      )
-    );
+      );
+
+      // Check for changes
+      setIsDirty(
+        JSON.stringify(updated) !==
+          JSON.stringify(
+            players.map(({ id, overall, position, archetype }) => ({
+              id,
+              overall,
+              position,
+              archetype,
+            }))
+          )
+      );
+
+      return updated;
+    });
   };
 
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
     try {
+      console.log("handle submit try block");
       await updatePlayers({
         players: updatedPlayers.map(({ id, overall, position, archetype }) => ({
           id,
@@ -79,48 +122,37 @@ const BulkUpdatePlayersModal = ({
           archetype,
         })),
       });
-      onClose();
-    } catch (err) {
+      setIsDirty(false); // Reset unsaved changes
+    } catch {
       setError("Failed to update players");
     } finally {
       setLoading(false);
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Update Players</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            ×
-          </button>
-        </div>
+    <div>
+      {error && <div>{error}</div>}
 
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
-          </div>
-        )}
+      {updatedPlayers.map((player) => (
+        <div key={player.id}>
+          <div>
+            <span>
+              {player.first_name} {player.last_name}
+            </span>
 
-        <div className="space-y-4">
-          {updatedPlayers.map((player) => (
-            <div key={player.id} className="bulk-update-player-item">
-              <div className="flex justify-between items-center">
-                <span className="font-medium">
-                  {player.first_name} {player.last_name}
-                </span>
+            {readOnlyPositionArchetype ? (
+              <div>
+                <div>{player.position}</div>
+                <div>{player.archetype}</div>
+              </div>
+            ) : (
+              <>
                 <select
                   value={player.position}
                   onChange={(e) =>
                     handlePositionChange(player.id, e.target.value)
                   }
-                  className="w-full px-2 py-1 border rounded"
                 >
                   {Object.keys(positions).map((positionKey) => (
                     <option key={positionKey} value={positionKey}>
@@ -129,13 +161,10 @@ const BulkUpdatePlayersModal = ({
                   ))}
                 </select>
                 <select
-                  id="archetype"
-                  name="archetype"
                   value={player.archetype}
                   onChange={(e) =>
                     handleArchetypeChange(player.id, e.target.value)
                   }
-                  required
                 >
                   {positions[player.position].map((arcOption) => (
                     <option key={arcOption} value={arcOption}>
@@ -143,49 +172,34 @@ const BulkUpdatePlayersModal = ({
                     </option>
                   ))}
                 </select>
-              </div>
-              <div>
-                <label>Overall</label>
-                <input
-                  type="range"
-                  min="40"
-                  max="99"
-                  value={player.overall}
-                  onChange={(e) =>
-                    handleOverallChange(player.id, e.target.value)
-                  }
-                  className="w-full"
-                />
-                <input
-                  type="number"
-                  value={player.overall}
-                  onChange={(e) =>
-                    handleOverallChange(player.id, e.target.value)
-                  }
-                  className="w-16 px-2 py-1 border rounded text-right"
-                  min="40"
-                  max="99"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+              </>
+            )}
+          </div>
 
-        <div className="flex justify-end gap-2 mt-6">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 border rounded hover:bg-gray-100"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300"
-          >
-            {loading ? "Updating..." : "Update Players"}
-          </button>
+          <div>
+            <label>Overall</label>
+            <input
+              type="range"
+              min="40"
+              max="99"
+              value={player.overall}
+              onChange={(e) => handleOverallChange(player.id, e.target.value)}
+            />
+            <input
+              type="number"
+              min="40"
+              max="99"
+              value={player.overall}
+              onChange={(e) => handleOverallChange(player.id, e.target.value)}
+            />
+          </div>
         </div>
+      ))}
+
+      <div>
+        <button onClick={handleSubmit} disabled={loading || !isDirty}>
+          {loading ? "Updating..." : "Update Players"}
+        </button>
       </div>
     </div>
   );

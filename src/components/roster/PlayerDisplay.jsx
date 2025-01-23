@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import PlayerList from "./PlayerList";
 import PlayerTable from "./PlayerTable";
 import { positions } from "../../../public/positions";
+import { useRoster } from "../../contexts/RosterContext";
 
-const PlayerDisplay = ({ players }) => {
+const PlayerDisplay = ({}) => {
   const [sortAttribute, setSortAttribute] = useState("position");
   const [filterValue, setFilterValue] = useState("");
   const [rosterView, setRosterView] = useState("list");
+  const { players } = useRoster();
 
   const handleToggleRosterView = () => {
     if (rosterView == "list") {

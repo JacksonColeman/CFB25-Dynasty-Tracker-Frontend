@@ -1,31 +1,27 @@
 import React, { useState, useEffect } from "react";
-import "./styles.css";
+import { useRoster } from "../../contexts/RosterContext";
 
-const ManageRedshirtsModal = ({
-  players = [],
-  isOpen,
-  onClose,
-  updatePlayers,
-}) => {
+const ManageRedshirtsModal = () => {
   const [updatedPlayers, setUpdatedPlayers] = useState([]);
+  const [initialPlayers, setInitialPlayers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { players, bulkUpdateRedshirt: updatePlayers } = useRoster();
 
   useEffect(() => {
     if (players) {
-      // Filter players where redshirted is false
-      setUpdatedPlayers(
-        players
-          .filter((player) => !player.redshirted)
-          .map((player) => ({
-            id: player.id,
-            first_name: player.first_name,
-            last_name: player.last_name,
-            current_redshirt: player.current_redshirt,
-            position: player.position,
-            overall: player.overall,
-          }))
-      );
+      const filteredPlayers = players
+        .filter((player) => !player.redshirted)
+        .map((player) => ({
+          id: player.id,
+          first_name: player.first_name,
+          last_name: player.last_name,
+          current_redshirt: player.current_redshirt,
+          position: player.position,
+          overall: player.overall,
+        }));
+      setUpdatedPlayers(filteredPlayers);
+      setInitialPlayers(filteredPlayers); // Keep a copy of the original state for comparison
     }
   }, [players]);
 
@@ -33,13 +29,14 @@ const ManageRedshirtsModal = ({
     setUpdatedPlayers((current) =>
       current.map((player) =>
         player.id === playerId
-          ? {
-              ...player,
-              current_redshirt: newValue,
-            }
+          ? { ...player, current_redshirt: newValue }
           : player
       )
     );
+  };
+
+  const hasChanges = () => {
+    return JSON.stringify(updatedPlayers) !== JSON.stringify(initialPlayers);
   };
 
   const handleSubmit = async () => {
@@ -52,67 +49,41 @@ const ManageRedshirtsModal = ({
           current_redshirt,
         })),
       });
-      onClose();
-    } catch (err) {
+      setInitialPlayers(updatedPlayers); // Sync initial state with updated state after saving
+    } catch {
       setError("Failed to update players");
     } finally {
       setLoading(false);
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Manage Redshirt Status</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            ×
-          </button>
-        </div>
+    <div>
+      <div>
+        <h2>Manage Redshirt Status</h2>
 
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
+        {error && <div>{error}</div>}
+
+        {updatedPlayers.map((player) => (
+          <div key={player.id}>
+            <label>
+              <input
+                type="checkbox"
+                checked={player.current_redshirt}
+                onChange={(e) =>
+                  handleRedshirtChange(player.id, e.target.checked)
+                }
+              />
+              <span>
+                {player.first_name} {player.last_name} - {player.overall} OVR{" "}
+                {player.position}
+              </span>
+            </label>
           </div>
-        )}
+        ))}
 
-        <div className="space-y-4">
-          {updatedPlayers.map((player) => (
-            <div key={player.id} className="bulk-update-player-item">
-              <div className="flex justify-between items-center">
-                <input
-                  type="checkbox"
-                  checked={player.current_redshirt}
-                  onChange={(e) =>
-                    handleRedshirtChange(player.id, e.target.checked)
-                  }
-                />
-                <span className="font-medium">
-                  {player.first_name} {player.last_name} - {player.overall} OVR{" "}
-                  {player.position}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex justify-end gap-2 mt-6">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 border rounded hover:bg-gray-100"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300"
-          >
+        <div>
+          <button onClick={handleSubmit} disabled={!hasChanges() || loading}>
             {loading ? "Updating..." : "Update Redshirt Status"}
           </button>
         </div>

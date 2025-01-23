@@ -53,7 +53,7 @@ const PlayerListItem = ({ player }) => {
       />
       <RecruitCardDetail header="dev trait" content={dev_trait} />
       {current_redshirt ? <FaTshirt color="red" fontSize={40} /> : null}
-      <button onClick={() => handleDeletePlayer(id)}>Delete</button>
+      {/* <button onClick={() => handleDeletePlayer(id)}>Delete</button> */}
       <button onClick={() => setEditing(true)}>Edit</button>
     </div>
   );

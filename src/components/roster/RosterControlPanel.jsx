@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useDynasty } from "../../contexts/DynastyContext";
 import { useRoster } from "../../contexts/RosterContext";
 import BulkUpdatePlayersModal from "./BulkUpdatePlayersModal";
 import ManageRedshirtsModal from "./ManageRedshirtsModal";
 import PlayerForm from "./PlayerForm";
 
-const RosterControlPanel = ({ players }) => {
+const RosterControlPanel = ({}) => {
   const { advanceYear } = useDynasty();
-  const { clearGraduates, clearRoster, bulkUpdatePlayers, bulkUpdateRedshirt } =
-    useRoster();
+  const {
+    players,
+    clearGraduates,
+    clearRoster,
+    bulkUpdatePlayers,
+    bulkUpdateRedshirt,
+  } = useRoster();
 
   const [confirmClearGraduates, setConfirmClearGraduates] = useState(false);
   const [confirmClearRoster, setConfirmClearRoster] = useState(false);

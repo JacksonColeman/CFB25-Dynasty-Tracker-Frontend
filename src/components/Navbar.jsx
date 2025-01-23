@@ -61,14 +61,34 @@ const Navbar = () => {
               >
                 Recruits
               </Link>
+              <Link
+                to="/mydynasty"
+                className="hover:text-gray-300 transition-colors"
+              >
+                Edit Dynasty
+              </Link>
+              <Link
+                to="/account"
+                className="hover:text-gray-300 transition-colors"
+              >
+                Account
+              </Link>
             </>
           ) : (
-            <Link to="/" className="hover:text-gray-300 transition-colors">
-              Select Dynasty
-            </Link>
+            <>
+              <Link to="/" className="hover:text-gray-300 transition-colors">
+                My Dynasties
+              </Link>
+              <Link
+                to="/account"
+                className="hover:text-gray-300 transition-colors"
+              >
+                Account
+              </Link>
+            </>
           )}
 
-          <div className="flex items-center space-x-4">
+          {/* <div className="flex items-center space-x-4">
             <span className="text-gray-300">{user.email}</span>
             <button
               onClick={handleLogout}
@@ -76,7 +96,7 @@ const Navbar = () => {
             >
               Logout
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>
