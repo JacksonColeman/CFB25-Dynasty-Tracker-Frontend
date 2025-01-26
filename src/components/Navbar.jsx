@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import { useDynasty } from "../contexts/DynastyContext";
+import { useAuth } from "../services/contexts/AuthContext";
+import { useDynasty } from "../services/contexts/DynastyContext";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -32,17 +32,8 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <div>
-          {currentDynasty && (
-            <div className="text-gray-300">
-              {currentDynasty.dynasty_name}: {currentDynasty.school_name}{" "}
-              {currentDynasty.year}
-            </div>
-          )}
-        </div>
-
-        <div className="NavFlex">
+      <div className="">
+        <div className="nav NavFlex">
           {/* Only show these links if a dynasty is selected */}
           {currentDynasty ? (
             <>

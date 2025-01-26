@@ -1,0 +1,38 @@
+/* Base ribbon styles */
+.ribbon {
+  position: absolute;
+  top: 10px;
+  right: -45px;
+  padding: 2px 50px;
+  font-size: 0.6rem;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  transform: rotate(45deg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Specific colors for devtrait */
+.ribbon--bronze {
+  background-color: #cd7f32;
+}
+
+.ribbon--silver {
+  background-color: #c0c0c0;
+}
+
+.ribbon--gold {
+  background-color: #ffd700;
+}
+
+.ribbon--diamond {
+  background-color: #00bfff;
+}
+
+.ribbon--default {
+  background-color: #808080; /* Gray for fallback */
+}
+
+.ribbon--hidden {
+  display: none;
+}

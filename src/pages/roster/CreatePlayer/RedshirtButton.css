@@ -1,0 +1,23 @@
+.redshirt-button {
+  padding: 10px;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.redshirt-button--inactive {
+  padding: 10px;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  color: lightgrey;
+}
+
+.redshirt-button:hover {
+  border-color: red;
+}
+
+.redshirt-button--active {
+  padding: 10px;
+  color: black;
+}

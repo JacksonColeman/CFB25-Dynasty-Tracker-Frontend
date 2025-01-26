@@ -3,24 +3,29 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import DynastyPage from "./components/dynasty-saves/DynastyPage";
-import AccountPage from "./components/account/AccountPage";
-import RosterPage from "./components/roster/RosterPage";
-import RecruitingPage from "./components/recruiting/RecruitingPage";
+import DynastyPage from "./pages/dynasty/DynastyPage";
+import AccountPage from "./pages/account/AccountPage";
+import RosterPage from "./pages/roster/RosterPage";
+import RecruitingPage from "./pages/recruiting/RecruitingPage";
 import Navbar from "./components/Navbar";
-import { AuthProvider } from "./contexts/AuthContext";
-import { DynastyProvider } from "./contexts/DynastyContext";
+import { AuthProvider } from "./services/contexts/AuthContext";
+import { DynastyProvider } from "./services/contexts/DynastyContext";
 import PrivateRoute from "./PrivateRoute";
-import LoginForm from "./components/login-signup/LoginForm";
-import RegistrationForm from "./components/login-signup/RegistrationForm";
-import { RosterProvider } from "./contexts/RosterContext";
-import EditDynastyPage from "./components/my-dynasty/EditDynastyPage";
-import PlayerForm from "./components/roster/PlayerForm";
+import LoginForm from "./pages/auth/login/LoginForm";
+import RegistrationForm from "./pages/auth/signup/RegistrationForm";
+import { RosterProvider } from "./services/contexts/RosterContext";
+import EditDynastyPage from "./pages/dynasty/ManageDynasty/EditDynastyPage";
+import PlayerForm from "./pages/roster/CreatePlayer/PlayerForm";
 import { Navigate } from "react-router-dom";
-import PlayerDisplay from "./components/roster/PlayerDisplay";
-import ManageRedshirtsModal from "./components/roster/ManageRedshirtsModal";
-import BulkUpdatePlayersModal from "./components/roster/BulkUpdatePlayersModal";
-import EncourageTransferPage from "./components/roster/EncourageTransferPage";
+import PlayerDisplay from "./pages/roster/ViewRoster/PlayerDisplay";
+import ManageRedshirtsModal from "./pages/roster/ManageRedshirts/ManageRedshirtsModal";
+import BulkUpdatePlayersModal from "./pages/roster/PositionChanges/BulkUpdatePlayersModal";
+import EncourageTransferPage from "./pages/roster/EncourageTransfers/EncourageTransferPage";
+import RecruitDisplay from "./pages/recruiting/RecruitingBoard/RecruitDisplay";
+import BulkPromoteRecruitsModal from "./pages/recruiting/PromoteToRoster/BulkPromoteRecruitsModal";
+import RecruitForm from "./pages/recruiting/CreateRecruits/RecruitForm";
+import ViewRosterPage from "./pages/roster/ViewRoster/ViewRosterPage";
+import CreatePlayerPage from "./pages/roster/CreatePlayer/CreatePlayerPage";
 
 function App() {
   return (
@@ -56,7 +61,7 @@ function App() {
                   </PrivateRoute>
                 }
               >
-                <Route path="create" element={<PlayerForm />} />
+                <Route path="create" element={<CreatePlayerPage />} />
                 <Route
                   path="training"
                   element={
@@ -78,7 +83,7 @@ function App() {
                   }
                 />
                 <Route path="cuts" element={<EncourageTransferPage />} />
-                <Route index element={<PlayerDisplay />} />
+                <Route index element={<ViewRosterPage />} />
               </Route>
               <Route
                 path="/recruiting"
@@ -87,7 +92,11 @@ function App() {
                     <RecruitingPage />
                   </PrivateRoute>
                 }
-              />
+              >
+                <Route path="create" element={<RecruitForm />} />
+                <Route path="promote" element={<BulkPromoteRecruitsModal />} />
+                <Route index element={<RecruitDisplay />} />
+              </Route>
               <Route
                 path="/mydynasty"
                 element={

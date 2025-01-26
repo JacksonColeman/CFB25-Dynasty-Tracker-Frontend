@@ -1,3 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* border: 1px solid blue !important; */
+}
+
 body {
   font-family: sans-serif;
 }
@@ -5,3 +12,114 @@ body {
 .bold {
   font-weight: bold;
 }
+
+.flex {
+  display: flex;
+}
+
+.nav {
+  background-color: #cc092f;
+  overflow: hidden;
+}
+
+.nav a:link,
+.nav a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  background-color: white;
+  color: #cc092f;
+  text-decoration: none;
+}
+
+/* RosterDisplay */
+
+.roster-view-header {
+  border-style: solid;
+  border-width: 0;
+  border-left-width: 4px;
+  border-color: #cc092f;
+  padding-left: 1rem;
+  margin: 1rem 0;
+}
+
+/* PlayerDisplay */
+
+.main-content {
+  margin: 1rem;
+}
+
+.player-filter {
+  margin: 1rem 0;
+}
+
+.player-filter-dropdown {
+  font-size: 1rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  border-color: lightgrey;
+}
+
+/* PlayerList */
+
+.player-list {
+  margin: 1rem 0;
+}
+
+/* RecruitCard */
+.recruit-list-item-name {
+  /* font-size: 1.3rem; */
+  margin: 0.5rem 0;
+  display: inline-block;
+}
+
+.recruit-list-item-top-row {
+  justify-content: space-between;
+}
+
+.recruit-list-item.committed {
+  background-color: whitesmoke;
+}
+
+/* styles.css */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+.NavFlex {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  padding-bottom: 10px;
+}
+
+.bulk-update-player-item {
+  margin-bottom: 10px;
+  border: 1px solid black;
+}
+
+.page-header {
+  border-style: solid;
+  border-width: 0;
+  border-left-width: 4px;
+  border-color: #cc092f;
+  padding-left: 1rem;
+  margin: 1rem 0;
+}
+
+/* .w-30 {
+  width: 30% !important;
+} */

@@ -1,0 +1,24 @@
+.icon-button {
+  background: none; /* Remove background */
+  border: none; /* Remove border */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
+  cursor: pointer; /* Add pointer cursor */
+  display: inline-flex; /* Align icon properly */
+  align-items: center; /* Center icon vertically */
+  justify-content: center; /* Center icon horizontally */
+  color: inherit; /* Inherit color for flexibility */
+  /* position: absolute;
+  left: 10px;
+  bottom: 10px; */
+  margin-left: 5px;
+}
+
+.icon-button:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.5); /* Custom focus ring */
+}
+
+.icon-button:hover {
+  color: #0056b3; /* Change icon color on hover */
+}
