@@ -1,4 +1,5 @@
 import React from "react";
+// import "./DevTraitRibbon.css";
 import "./DevTraitRibbon.css";
 
 const DevTraitRibbon = ({ devTrait }) => {

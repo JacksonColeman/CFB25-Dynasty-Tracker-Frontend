@@ -1,0 +1,11 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://cfb-dynasty-tracker-backend-bb5f204eb1fd.herokuapp.com/:splat"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "https://cfb-dynasty-tracker-backend-bb5f204eb1fd.herokuapp.com"
+    Access-Control-Allow-Credentials = "true"
