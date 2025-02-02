@@ -1,6 +1,6 @@
 import React from "react";
 import PageHeader from "../../../../components/ui/PageHeader";
-import BulkUpdatePlayersModal from "../PositionChanges/BulkUpdatePlayersModal";
+// import BulkUpdatePlayersModal from "../PositionChanges/BulkUpdatePlayersModal";
 import { useRoster } from "../../../../services/contexts/RosterContext";
 import TrainingResultsComponent from "./TrainingResultsComponent";
 import { sortPlayers } from "../../../../utils/playerUtils";

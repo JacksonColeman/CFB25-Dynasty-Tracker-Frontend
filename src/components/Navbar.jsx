@@ -5,12 +5,12 @@ import { useDynasty } from "../services/contexts/DynastyContext";
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { currentDynasty } = useDynasty();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await logout();
-    navigate("/login");
-  };
+  // const handleLogout = async () => {
+  //   await logout();
+  //   navigate("/login");
+  // };
 
   // If no user is logged in, show minimal navbar
   if (!user) {

@@ -3,7 +3,7 @@ import React from "react";
 import DevTraitRibbon from "../../ViewRoster/DevTraitRibbon";
 import { FaUserGraduate } from "react-icons/fa";
 import { FaExchangeAlt } from "react-icons/fa";
-import { IoShieldSharp } from "react-icons/io5";
+// import { IoShieldSharp } from "react-icons/io5";
 import "./PlayersLeavingPlayerItem.css";
 import FootballShieldIcon from "../../../../components/icons/FootballShieldIcon";
 

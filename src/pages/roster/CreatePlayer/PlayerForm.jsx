@@ -6,7 +6,7 @@ import { devTraits, classYears, states } from "../../../utils/utils";
 import { heightOptions, heightToInches } from "../../../utils/heights";
 import "./PlayerForm.css";
 import RedshirtButton from "./RedshirtButton";
-import NumberInput from "../../../components/ui/NumberInput";
+// import NumberInput from "../../../components/ui/NumberInput";
 import { createPlayerDefaultValues } from "../../../utils/defaultValues";
 
 const PlayerForm = () => {
