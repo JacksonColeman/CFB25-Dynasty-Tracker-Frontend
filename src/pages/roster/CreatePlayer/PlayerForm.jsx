@@ -142,8 +142,19 @@ const PlayerForm = () => {
           />
         </div>
 
-        <div className="player-form__overall-section">
-          <label>Overall</label>
+        <FormField
+          type="number"
+          label="Overall"
+          id="overall"
+          name="overall"
+          value={formData.overall}
+          onChange={handleChange}
+          min="1"
+          max="99"
+          showLabel={true}
+          required
+        />
+        {/* <label>Overall</label>
           <NumberInput
             defaultValue={formData.overall}
             onChange={(value) =>
@@ -152,8 +163,8 @@ const PlayerForm = () => {
                 overall: value,
               }))
             }
-          />
-        </div>
+          /> */}
+
         {/* 
           <FormField
             type="number"

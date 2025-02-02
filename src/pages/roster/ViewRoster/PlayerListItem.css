@@ -6,6 +6,7 @@
   background-color: white;
   overflow: hidden;
   position: relative;
+  max-width: 500px;
 }
 
 .player-list-item__top-row {

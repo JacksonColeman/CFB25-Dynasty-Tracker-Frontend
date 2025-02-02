@@ -6,7 +6,7 @@ import MyDynastyControlPanel from "./MyDynastyControlPanel";
 import DeleteDynasty from "./DeleteDynasty";
 
 const EditDynastyPage = () => {
-  const { loading, currentDynasty } = useDynasty();
+  const { loading, currentDynasty, advanceYear } = useDynasty();
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const navigate = useNavigate();
@@ -27,6 +27,15 @@ const EditDynastyPage = () => {
     setConfirmDelete(!confirmDelete);
   };
 
+  const handleAdvanceYear = async () => {
+    console.log("advance");
+    try {
+      await advanceYear();
+    } catch {
+      throw error;
+    }
+  };
+
   return (
     <div className="dynasty-display">
       <MyDynastyControlPanel
@@ -43,6 +52,7 @@ const EditDynastyPage = () => {
         <EditDynastyForm dynasty={currentDynasty} onSubmit={toggleEditing} />
       )}
       {confirmDelete ? <DeleteDynasty dynasty={currentDynasty} /> : null}
+      <button onClick={handleAdvanceYear}>Advance Year</button>
     </div>
   );
 };

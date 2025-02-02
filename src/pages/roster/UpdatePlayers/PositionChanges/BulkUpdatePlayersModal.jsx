@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { positions } from "../../../utils/positions";
-import { useRoster } from "../../../services/contexts/RosterContext";
+import { positions } from "../../../../utils/positions";
+import { useRoster } from "../../../../services/contexts/RosterContext";
 
 const BulkUpdatePlayersModal = ({ readOnlyPositionArchetype = false }) => {
   const [updatedPlayers, setUpdatedPlayers] = useState([]);

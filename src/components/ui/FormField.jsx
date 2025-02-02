@@ -15,7 +15,7 @@ const FormField = ({
   min,
   max,
   onInput,
-  showLabel,
+  showLabel = true,
   className,
 }) => {
   const renderInput = () => {

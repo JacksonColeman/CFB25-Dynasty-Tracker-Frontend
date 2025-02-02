@@ -7,7 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:3000/", // Your Rails API server
+        target:
+          "https://cfb-dynasty-tracker-backend-bb5f204eb1fd.herokuapp.com/", // Your Rails API server
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

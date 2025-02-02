@@ -48,7 +48,9 @@ body {
 /* PlayerDisplay */
 
 .main-content {
-  margin: 1rem;
+  margin: 2rem;
+  max-width: 90%;
+  width: 500px;
 }
 
 .player-filter {
@@ -104,6 +106,12 @@ td {
   align-items: center;
   gap: 50px;
   padding-bottom: 10px;
+}
+
+.nav-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .bulk-update-player-item {

@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import "./playerlistitem.css";
-import { FaTshirt } from "react-icons/fa";
-import DevTraitRibbon from "./DevTraitRibbon";
+import DevTraitRibbon from "../../ViewRoster/DevTraitRibbon";
+import FormField from "../../../../components/ui/FormField";
 
-import PlayerActions from "./PlayerActions";
-
-const PlayerListItem = ({ player }) => {
+const TrainingResultsPlayerItem = ({ player }) => {
   const {
+    id,
     first_name,
     last_name,
     position,
@@ -18,6 +16,12 @@ const PlayerListItem = ({ player }) => {
     current_redshirt,
   } = player;
 
+  const [newOverall, setNewOverall] = useState(overall);
+
+  const handleUpdateOverall = (newValue) => {
+    setNewOverall(newValue);
+  };
+
   return (
     <div className="player-list-item">
       <div className="player-list-item__top-row">
@@ -28,21 +32,23 @@ const PlayerListItem = ({ player }) => {
           <span className="player-list-item__redshirted"> (RS)</span>
         ) : null}
       </div>
-      <div className="player-list-item__middle-row">
-        <span className="player-list-item__overall">{overall}</span>
+      <div className="player-list-item__middle-row ">
         <h3 className="player-list-item__name">
           {first_name} {last_name}
         </h3>
-        {current_redshirt ? (
-          <span className="player-list-item__redshirt-icon">
-            <FaTshirt color="red" fontSize={25} />
-          </span>
-        ) : null}
+        <span className="player-list-item__overall">{overall}</span>
+        <span>{">"}</span>
+        <FormField
+          type="number"
+          min={overall}
+          max={99}
+          value={newOverall}
+          onChange={(e) => handleUpdateOverall(e.target.value)}
+        />
       </div>
       <DevTraitRibbon devTrait={dev_trait} />
-      <PlayerActions player={player} />
     </div>
   );
 };
 
-export default PlayerListItem;
+export default TrainingResultsPlayerItem;

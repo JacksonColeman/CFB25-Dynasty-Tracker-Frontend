@@ -15,17 +15,16 @@ import LoginForm from "./pages/auth/login/LoginForm";
 import RegistrationForm from "./pages/auth/signup/RegistrationForm";
 import { RosterProvider } from "./services/contexts/RosterContext";
 import EditDynastyPage from "./pages/dynasty/ManageDynasty/EditDynastyPage";
-import PlayerForm from "./pages/roster/CreatePlayer/PlayerForm";
-import { Navigate } from "react-router-dom";
-import PlayerDisplay from "./pages/roster/ViewRoster/PlayerDisplay";
-import ManageRedshirtsModal from "./pages/roster/ManageRedshirts/ManageRedshirtsModal";
-import BulkUpdatePlayersModal from "./pages/roster/PositionChanges/BulkUpdatePlayersModal";
-import EncourageTransferPage from "./pages/roster/EncourageTransfers/EncourageTransferPage";
+import EncourageTransferPage from "./pages/roster/RemovingPlayers/EncourageTransfers/EncourageTransferPage";
 import RecruitDisplay from "./pages/recruiting/RecruitingBoard/RecruitDisplay";
 import BulkPromoteRecruitsModal from "./pages/recruiting/PromoteToRoster/BulkPromoteRecruitsModal";
 import RecruitForm from "./pages/recruiting/CreateRecruits/RecruitForm";
 import ViewRosterPage from "./pages/roster/ViewRoster/ViewRosterPage";
 import CreatePlayerPage from "./pages/roster/CreatePlayer/CreatePlayerPage";
+import ManageRedshirtsPage from "./pages/roster/ManageRedshirts/ManageRedshirtsPage";
+import PlayersLeavingPage from "./pages/roster/RemovingPlayers/PlayersLeaving/PlayersLeavingPage";
+import PositionChangesPage from "./pages/roster/UpdatePlayers/PositionChanges/PositionChangesPage";
+import TrainingResultsPage from "./pages/roster/UpdatePlayers/TrainingResults/TrainingResultsPage";
 
 function App() {
   return (
@@ -62,25 +61,15 @@ function App() {
                 }
               >
                 <Route path="create" element={<CreatePlayerPage />} />
-                <Route
-                  path="training"
-                  element={
-                    <BulkUpdatePlayersModal
-                      key={1}
-                      readOnlyPositionArchetype={true}
-                    />
-                  }
-                />
+                <Route path="training" element={<TrainingResultsPage />} />
                 <Route
                   path="position-changes"
-                  element={<BulkUpdatePlayersModal key={2} />}
+                  element={<PositionChangesPage />}
                 />
-                <Route path="redshirts" element={<ManageRedshirtsModal />} />
+                <Route path="redshirts" element={<ManageRedshirtsPage />} />
                 <Route
                   path="players-leaving"
-                  element={
-                    <EncourageTransferPage sortDirectionAscending={false} />
-                  }
+                  element={<PlayersLeavingPage />}
                 />
                 <Route path="cuts" element={<EncourageTransferPage />} />
                 <Route index element={<ViewRosterPage />} />

@@ -1,0 +1,30 @@
+.manage-redshirts-player-item__icon {
+  margin-left: auto;
+  margin-right: 3rem;
+  padding-right: 1rem;
+}
+
+.manage-redshirts-player-item__icon svg {
+  cursor: pointer;
+}
+
+.manage-redshirts-player-item__icon-unfilled svg {
+  fill: white; /* Ensure the icon is filled with white */
+  stroke: red; /* Add a red border */
+  stroke-width: 20px; /* Adjust the border thickness */
+}
+
+.manage-redshirts-player-item__icon-filled svg {
+  fill: red; /* Ensure the icon is filled with white */
+  stroke: red; /* Add a red border */
+  stroke-width: 20px; /* Adjust the border thickness */
+}
+
+.manage-redshirts-player-item__icon svg:hover {
+  stroke: darkred;
+  stroke-width: 20px; /* Adjust the border thickness */
+}
+
+.manage-redshirts-middle-row {
+  margin: 0;
+}

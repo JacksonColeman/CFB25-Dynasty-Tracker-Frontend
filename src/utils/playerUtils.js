@@ -1,5 +1,6 @@
 import { positionCategories } from "./positionCategories";
 import { customPositionOrder } from "./positionDropdownOptions";
+import { classYears } from "./utils";
 
 export const filterPlayers = (players, filterValue) => {
   if (filterValue === "Offense") {
@@ -23,21 +24,31 @@ export const filterPlayers = (players, filterValue) => {
   return players;
 };
 
-export const sortPlayers = (players, sortAttribute) => {
-  //   console.log(players);
-  console.log(sortAttribute);
+export const sortPlayers = (players, sortAttribute, sortOrder = "asc") => {
   return [...players].sort((a, b) => {
+    let comparison = 0;
+
     if (sortAttribute === "overall") {
-      return b[sortAttribute] - a[sortAttribute];
+      comparison = b[sortAttribute] - a[sortAttribute];
     } else if (sortAttribute === "position") {
-      const positionComparison =
+      comparison =
         customPositionOrder.indexOf(a[sortAttribute]) -
         customPositionOrder.indexOf(b[sortAttribute]);
-      if (positionComparison !== 0) {
-        return positionComparison;
+      if (comparison === 0) {
+        comparison = b.overall - a.overall; // Tiebreaker: Sort by overall in descending order
       }
-      return b.overall - a.overall; // Tiebreaker: Sort by overall in descending order
+    } else if (sortAttribute === "classYear") {
+      comparison =
+        classYears.indexOf(a.class_year) - classYears.indexOf(b.class_year);
+    } else {
+      comparison = a[sortAttribute].localeCompare(b[sortAttribute]);
     }
-    return a[sortAttribute].localeCompare(b[sortAttribute]);
+
+    // Handle ascending/descending order
+    if (sortOrder === "desc") {
+      comparison = -comparison;
+    }
+
+    return comparison;
   });
 };

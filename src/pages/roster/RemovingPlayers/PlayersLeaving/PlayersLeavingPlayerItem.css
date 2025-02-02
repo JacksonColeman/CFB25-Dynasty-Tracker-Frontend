@@ -1,0 +1,22 @@
+.remove-player-action svg:hover,
+.football-shield-icon:hover svg {
+  color: white;
+  fill: silver;
+  cursor: pointer;
+}
+
+.football-shield-icon:hover svg:nth-child(2) {
+  fill: white;
+  color: white;
+}
+
+.remove-player-action {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+  margin-right: 3rem;
+}
+
+.players-leaving-item {
+  max-width: 500px;
+}

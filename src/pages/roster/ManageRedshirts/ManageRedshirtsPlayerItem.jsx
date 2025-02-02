@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import "./playerlistitem.css";
-import { FaTshirt } from "react-icons/fa";
-import DevTraitRibbon from "./DevTraitRibbon";
+import React from "react";
 
-import PlayerActions from "./PlayerActions";
+import "./ManageRedshirtsPlayerItem.css";
+import DevTraitRibbon from "../ViewRoster/DevTraitRibbon";
+import RedshirtToggleIcon from "./RedshirtToggleIcon";
 
-const PlayerListItem = ({ player }) => {
+const ManageRedshirtsPlayerItem = ({ player, onRedshirtChange }) => {
   const {
+    id,
     first_name,
     last_name,
     position,
@@ -28,21 +28,19 @@ const PlayerListItem = ({ player }) => {
           <span className="player-list-item__redshirted"> (RS)</span>
         ) : null}
       </div>
-      <div className="player-list-item__middle-row">
+      <div className="player-list-item__middle-row manage-redshirts-middle-row">
         <span className="player-list-item__overall">{overall}</span>
         <h3 className="player-list-item__name">
           {first_name} {last_name}
         </h3>
-        {current_redshirt ? (
-          <span className="player-list-item__redshirt-icon">
-            <FaTshirt color="red" fontSize={25} />
-          </span>
-        ) : null}
+        <RedshirtToggleIcon
+          isToggled={current_redshirt}
+          onToggle={() => onRedshirtChange(id)}
+        />
       </div>
       <DevTraitRibbon devTrait={dev_trait} />
-      <PlayerActions player={player} />
     </div>
   );
 };
 
-export default PlayerListItem;
+export default ManageRedshirtsPlayerItem;

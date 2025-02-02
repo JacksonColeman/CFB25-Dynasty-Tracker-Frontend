@@ -8,7 +8,7 @@ const RosterPage = () => {
   const hasPlayers = players.length > 0;
 
   return (
-    <div>
+    <div className="roster-page">
       <RosterNav hasPlayers={hasPlayers} />
       <Outlet />
     </div>

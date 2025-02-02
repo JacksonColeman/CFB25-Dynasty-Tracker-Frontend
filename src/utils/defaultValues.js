@@ -4,7 +4,7 @@ export const createPlayerDefaultValues = {
   classYear: "",
   position: "",
   archetype: "",
-  overall: 80,
+  overall: "",
   devTrait: "",
   redshirted: false,
   currentRedshirt: false,

@@ -1,19 +1,11 @@
 import React, { useState } from "react";
 import { useRoster } from "../../../services/contexts/RosterContext";
+import PlayersLeavingPlayerItem from "./PlayersLeaving/PlayersLeavingPlayerItem";
 
-const EncourageTransferPage = ({ sortDirectionAscending = true }) => {
-  const { players, deletePlayers } = useRoster();
+const RemovePlayers = ({ players, type }) => {
+  const { deletePlayers } = useRoster();
   const [selectedPlayerIds, setSelectedPlayerIds] = useState([]);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-
-  // Sort players by overall in ascending order
-  const sortedPlayers = [...players].sort((a, b) => {
-    if (sortDirectionAscending) {
-      return a.overall - b.overall; // Ascending
-    } else {
-      return b.overall - a.overall; // Descending (reverse)
-    }
-  });
 
   // Toggle selection of a player
   const togglePlayerSelection = (playerId) => {
@@ -39,24 +31,25 @@ const EncourageTransferPage = ({ sortDirectionAscending = true }) => {
 
   return (
     <div>
-      <h3>{`${
-        sortDirectionAscending ? "Encourage Transfers" : "Players Leaving"
-      }`}</h3>
-
       <form>
         <div>
-          {sortedPlayers.map((player) => (
-            <div key={player.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={selectedPlayerIds.includes(player.id)}
-                  onChange={() => togglePlayerSelection(player.id)}
-                />
-                {player.first_name} {player.last_name} • {player.overall} OVR{" "}
-                {player.position}
-              </label>
-            </div>
+          {players.map((player) => (
+            <PlayersLeavingPlayerItem
+              player={player}
+              key={player.id}
+              type={type}
+            />
+            // <div key={player.id}>
+            //   <label>
+            //     <input
+            //       type="checkbox"
+            //       checked={selectedPlayerIds.includes(player.id)}
+            //       onChange={() => togglePlayerSelection(player.id)}
+            //     />
+            //     {player.first_name} {player.last_name} • {player.overall} OVR{" "}
+            //     {player.position}
+            //   </label>
+            // </div>
           ))}
         </div>
         <button
@@ -71,4 +64,4 @@ const EncourageTransferPage = ({ sortDirectionAscending = true }) => {
   );
 };
 
-export default EncourageTransferPage;
+export default RemovePlayers;
