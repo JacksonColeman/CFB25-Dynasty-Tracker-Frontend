@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./playerlistitem.css";
+import "./PlayerListItem.css";
 import { FaTshirt } from "react-icons/fa";
 import DevTraitRibbon from "./DevTraitRibbon";
 
