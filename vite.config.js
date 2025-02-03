@@ -8,9 +8,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         target:
-          process.env.NODE_ENV === "development"
-            ? "http://localhost:3000/"
-            : "https://cfb-dynasty-tracker-backend-bb5f204eb1fd.herokuapp.com/",
+          "https://cfb-dynasty-tracker-backend-bb5f204eb1fd.herokuapp.com/",
 
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
