@@ -41,6 +41,7 @@ const PlayerListItem = ({ player }) => {
       </div>
       <DevTraitRibbon devTrait={dev_trait} />
       <PlayerActions player={player} />
+      <p>Skill caps: {player.skill_caps}</p>
     </div>
   );
 };
