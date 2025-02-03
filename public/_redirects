@@ -1,1 +1,2 @@
-/api/*    /api/:splat   200
+/api/*    https://cfb-dynasty-tracker-backend-bb5f204eb1fd.herokuapp.com/:splat  200
+/*        /index.html   200
