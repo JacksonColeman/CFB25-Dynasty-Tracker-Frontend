@@ -9,7 +9,7 @@ export default defineConfig({
       "/api": {
         target:
           process.env.NODE_ENV === "development"
-            ? "http://localhost:3000"
+            ? "http://localhost:3000/"
             : "https://cfb-dynasty-tracker-backend-bb5f204eb1fd.herokuapp.com/",
 
         changeOrigin: true,
