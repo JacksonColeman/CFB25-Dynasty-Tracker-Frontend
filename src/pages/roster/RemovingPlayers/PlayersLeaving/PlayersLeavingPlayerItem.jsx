@@ -6,6 +6,7 @@ import { FaExchangeAlt } from "react-icons/fa";
 // import { IoShieldSharp } from "react-icons/io5";
 import "./PlayersLeavingPlayerItem.css";
 import FootballShieldIcon from "../../../../components/icons/FootballShieldIcon";
+import PlayerLeaveAction from "./PlayerLeaveAction";
 
 const PlayersLeavingPlayerItem = ({ player, onToggle, type }) => {
   const {
@@ -20,6 +21,10 @@ const PlayersLeavingPlayerItem = ({ player, onToggle, type }) => {
     redshirted,
     current_redshirt,
   } = player;
+
+  const handleClickTransfer = () => {
+    console.log("transfer");
+  };
 
   return (
     <div className="player-list-item players-leaving-item">
@@ -43,18 +48,10 @@ const PlayersLeavingPlayerItem = ({ player, onToggle, type }) => {
             ) : (
               <FaExchangeAlt fontSize={"2rem"} />
             )}
-            {/* <IoShieldSharp
-            color={"black"}
-            stroke={"silver"}
-            // strokeWidth={20}
-            fontSize={"2rem"}
-          /> */}
             {overall > 84 ? <FootballShieldIcon /> : null}
           </div>
         ) : (
-          <div className="remove-player-action">
-            <FaExchangeAlt fontSize={"2rem"} />
-          </div>
+          <PlayerLeaveAction player={player} />
         )}
         <DevTraitRibbon devTrait={dev_trait} />
       </div>
