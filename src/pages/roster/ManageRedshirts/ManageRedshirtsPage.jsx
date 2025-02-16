@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PageHeader from "../../../components/ui/PageHeader";
 import ManageRedshirtsManager from "./ManageRedshirtsManager";
 import { useRoster } from "../../../services/contexts/RosterContext";

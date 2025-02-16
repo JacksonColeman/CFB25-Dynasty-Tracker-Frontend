@@ -1,6 +1,7 @@
-import React from "react";
 // import "./DevTraitRibbon.css";
 import "./DevTraitRibbon.css";
+
+import PropTypes from "prop-types";
 
 const DevTraitRibbon = ({ devTrait }) => {
   // Determine the ribbon color class based on the devtrait
@@ -20,6 +21,10 @@ const DevTraitRibbon = ({ devTrait }) => {
   };
 
   return <div className={getRibbonClass()}>{devTrait}</div>;
+};
+
+DevTraitRibbon.propTypes = {
+  devTrait: PropTypes.string.isRequired,
 };
 
 export default DevTraitRibbon;

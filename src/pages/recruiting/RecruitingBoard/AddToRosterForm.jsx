@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 import { useRoster } from "../../../services/contexts/RosterContext";
 import { positions } from "../../../utils/positions";
 
@@ -71,7 +72,7 @@ const AddToRosterForm = ({ recruit, closeForm }) => {
     try {
       await addRecruitToRoster(recruit.id, formData);
       closeForm(); // Close the form upon successful submission
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.");
     }
   };
@@ -176,6 +177,10 @@ const AddToRosterForm = ({ recruit, closeForm }) => {
       </form>
     </div>
   );
+};
+AddToRosterForm.propTypes = {
+  recruit: PropTypes.object.isRequired,
+  closeForm: PropTypes.func.isRequired,
 };
 
 export default AddToRosterForm;

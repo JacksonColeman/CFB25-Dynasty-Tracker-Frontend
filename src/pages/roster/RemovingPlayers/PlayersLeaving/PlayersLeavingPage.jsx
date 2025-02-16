@@ -1,4 +1,3 @@
-import React from "react";
 // import EncourageTransferPage from "../EncourageTransfers/EncourageTransferPage";
 import PageHeader from "../../../../components/ui/PageHeader";
 import RemovePlayers from "../RemovePlayers";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { schools } from "../../../utils/schools";
 import { useDynasty } from "../../../services/contexts/DynastyContext";
 
@@ -19,7 +19,7 @@ const CreateDynastyForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await createDynasty({
+      await createDynasty({
         dynasty_name: formData.dynastyName,
         school_name: formData.schoolName,
         year: formData.year,

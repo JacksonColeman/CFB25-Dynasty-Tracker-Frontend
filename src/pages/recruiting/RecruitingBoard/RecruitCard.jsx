@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { FaStar, FaGem, FaRegTimesCircle, FaEllipsisV } from "react-icons/fa"; // Import the star icon
+import { useState } from "react";
+import { FaStar, FaGem, FaRegTimesCircle } from "react-icons/fa"; // Import the star icon
 import "./recruitcard.css";
-import RecruitCardDetail from "./RecruitCardDetail";
 import EditRecruitForm from "./EditRecruitForm";
-import { useRoster } from "../../../services/contexts/RosterContext";
+// import { useRoster } from "../../../services/contexts/RosterContext";
 import AddToRosterForm from "./AddToRosterForm";
+import PropTypes from "prop-types";
 
 const RecruitCard = ({ recruit }) => {
   // const [formData, setFormData] = useState({
@@ -30,26 +30,25 @@ const RecruitCard = ({ recruit }) => {
     position,
     archetype,
     athlete,
-    scouted,
-    gem,
-    bust,
+    // scouted,
+    // gem,
+    // bust,
     recruiting_stage,
-    notes,
+    // notes,
   } = recruit;
 
-  const [showNotes, setShowNotes] = useState(false);
+  // const [showNotes, setShowNotes] = useState(false);
   const [editing, setEditing] = useState(false);
   const [addingToRoster, setAddingToRoster] = useState(false);
 
-  const { deleteRecruit } = useRoster();
+  // const { deleteRecruit } = useRoster();
 
-  const handleDelete = async () => {
-    try {
-      await deleteRecruit(recruit.id);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const handleDelete = async () => {
+  //   try {
+  //     await deleteRecruit(recruit.id);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
   // Handle updating an individual field (PATCH request)
 
   // Render the star rating as black filled stars
@@ -170,3 +169,23 @@ const RecruitCard = ({ recruit }) => {
 };
 
 export default RecruitCard;
+
+RecruitCard.propTypes = {
+  recruit: PropTypes.shape({
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    recruit_class: PropTypes.string,
+    star_rating: PropTypes.number,
+    position: PropTypes.string,
+    archetype: PropTypes.string,
+    athlete: PropTypes.bool,
+    scouted: PropTypes.bool,
+    gem: PropTypes.bool,
+    bust: PropTypes.bool,
+    recruiting_stage: PropTypes.string,
+    notes: PropTypes.string,
+    id: PropTypes.number,
+    // scouted: PropTypes.bool,
+    // gem: PropTypes.bool,
+  }),
+};

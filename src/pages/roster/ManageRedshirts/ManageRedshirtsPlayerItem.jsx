@@ -1,8 +1,7 @@
-import React from "react";
-
 import "./ManageRedshirtsPlayerItem.css";
 import DevTraitRibbon from "../ViewRoster/DevTraitRibbon";
 import RedshirtToggleIcon from "./RedshirtToggleIcon";
+import PropTypes from "prop-types";
 
 const ManageRedshirtsPlayerItem = ({ player, onRedshirtChange }) => {
   const {
@@ -41,6 +40,21 @@ const ManageRedshirtsPlayerItem = ({ player, onRedshirtChange }) => {
       <DevTraitRibbon devTrait={dev_trait} />
     </div>
   );
+};
+ManageRedshirtsPlayerItem.propTypes = {
+  player: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    position: PropTypes.string.isRequired,
+    archetype: PropTypes.string.isRequired,
+    class_year: PropTypes.string.isRequired,
+    overall: PropTypes.number.isRequired,
+    dev_trait: PropTypes.string.isRequired,
+    redshirted: PropTypes.bool.isRequired,
+    current_redshirt: PropTypes.bool.isRequired,
+  }).isRequired,
+  onRedshirtChange: PropTypes.func.isRequired,
 };
 
 export default ManageRedshirtsPlayerItem;

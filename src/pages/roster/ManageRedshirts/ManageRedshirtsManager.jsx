@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useRoster } from "../../../services/contexts/RosterContext";
 import ManageRedshirtsPlayerItem from "./ManageRedshirtsPlayerItem";
 
@@ -68,6 +69,14 @@ const ManageRedshirtsManager = ({ players }) => {
       </div>
     </div>
   );
+};
+ManageRedshirtsManager.propTypes = {
+  players: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      current_redshirt: PropTypes.bool.isRequired,
+    })
+  ).isRequired,
 };
 
 export default ManageRedshirtsManager;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRoster } from "../../../services/contexts/RosterContext";
 import { positions } from "../../../utils/positions";
 
@@ -8,39 +8,39 @@ const BulkPromoteRecruitsModal = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const overallMap = {
-    5: 25,
-    4: 22,
-    3: 14,
-    2: 7,
-    1: 0,
-  };
-
-  const positionOverallMap = {
-    QB: 2,
-    HB: 1,
-    FB: 3,
-    WR: 0,
-    TE: 1,
-    LT: 2,
-    RT: 2,
-    LG: 2,
-    RG: 2,
-    C: 0,
-    LE: 2,
-    RE: 2,
-    DT: 2,
-    LOLB: 2,
-    ROLB: 2,
-    MLB: 2,
-    CB: 3,
-    FS: 2,
-    SS: 2,
-    K: 2,
-    P: 3,
-  };
-
   useEffect(() => {
+    const overallMap = {
+      5: 25,
+      4: 22,
+      3: 14,
+      2: 7,
+      1: 0,
+    };
+
+    const positionOverallMap = {
+      QB: 2,
+      HB: 1,
+      FB: 3,
+      WR: 0,
+      TE: 1,
+      LT: 2,
+      RT: 2,
+      LG: 2,
+      RG: 2,
+      C: 0,
+      LE: 2,
+      RE: 2,
+      DT: 2,
+      LOLB: 2,
+      ROLB: 2,
+      MLB: 2,
+      CB: 3,
+      FS: 2,
+      SS: 2,
+      K: 2,
+      P: 3,
+    };
+
     if (recruits) {
       setUpdatedRecruits(
         recruits.map((recruit) => ({
@@ -92,7 +92,7 @@ const BulkPromoteRecruitsModal = () => {
       };
 
       await bulkAddRecruitsToRoster(recruitData);
-    } catch (err) {
+    } catch {
       setError("An error occurred while promoting recruits.");
     } finally {
       setLoading(false);

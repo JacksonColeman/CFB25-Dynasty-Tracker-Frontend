@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const DynastySavesControlPanel = ({ onCreateDynasty }) => {
   return (
@@ -9,3 +9,7 @@ const DynastySavesControlPanel = ({ onCreateDynasty }) => {
 };
 
 export default DynastySavesControlPanel;
+
+DynastySavesControlPanel.propTypes = {
+  onCreateDynasty: PropTypes.func.isRequired,
+};

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import RecruitList from "./RecruitList";
 import RecruitTable from "./RecruitTable";
 import { positions } from "../../../utils/positions";
@@ -8,7 +8,8 @@ import { useDynasty } from "../../../services/contexts/DynastyContext";
 const RecruitDisplay = () => {
   const [sortAttribute, setSortAttribute] = useState("position");
   const [filterValue, setFilterValue] = useState("");
-  const [recruitView, setRecruitView] = useState("list");
+  // const [recruitView, setRecruitView] = useState("list");
+  const recruitView = "list";
   const { recruits } = useRoster();
   const { currentDynasty } = useDynasty();
 
@@ -55,9 +56,9 @@ const RecruitDisplay = () => {
   //   return a.last_name.localeCompare(b.last_name);
   // });
 
-  const handleToggleRecruitView = () => {
-    setRecruitView(recruitView === "list" ? "table" : "list");
-  };
+  // const handleToggleRecruitView = () => {
+  //   setRecruitView(recruitView === "list" ? "table" : "list");
+  // };
 
   const positionCategories = {
     Offense: ["QB", "HB", "FB", "LT", "LG", "C", "RG", "RT", "TE", "WR"],
@@ -99,18 +100,18 @@ const RecruitDisplay = () => {
     return true;
   });
 
-  const getSortValue = (recruit, attribute) => {
-    switch (attribute) {
-      case "star_rating":
-        return recruit.star_rating;
-      case "recruiting_stage":
-        return recruitingStages.indexOf(recruit.recruiting_stage);
-      case "position":
-        return customPositionOrder.indexOf(recruit.position);
-      default:
-        return recruit[attribute];
-    }
-  };
+  // const getSortValue = (recruit, attribute) => {
+  //   switch (attribute) {
+  //     case "star_rating":
+  //       return recruit.star_rating;
+  //     case "recruiting_stage":
+  //       return recruitingStages.indexOf(recruit.recruiting_stage);
+  //     case "position":
+  //       return customPositionOrder.indexOf(recruit.position);
+  //     default:
+  //       return recruit[attribute];
+  //   }
+  // };
 
   const sortedRecruits = [...filteredRecruits].sort((a, b) => {
     if (sortAttribute === "star_rating") {

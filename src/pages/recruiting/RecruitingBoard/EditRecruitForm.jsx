@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { positions } from "../../../utils/positions";
 import { useRoster } from "../../../services/contexts/RosterContext";
+import PropTypes from "prop-types";
 
 const EditRecruitForm = ({ recruit, saveEdit }) => {
   const { updateRecruit } = useRoster();
@@ -273,5 +274,22 @@ const EditRecruitForm = ({ recruit, saveEdit }) => {
     </form>
   );
 };
-
+EditRecruitForm.propTypes = {
+  recruit: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    position: PropTypes.string.isRequired,
+    archetype: PropTypes.string.isRequired,
+    athlete: PropTypes.bool,
+    recruit_class: PropTypes.string.isRequired,
+    star_rating: PropTypes.number.isRequired,
+    scouted: PropTypes.bool,
+    gem: PropTypes.bool,
+    bust: PropTypes.bool,
+    recruiting_stage: PropTypes.string.isRequired,
+    notes: PropTypes.string,
+  }).isRequired,
+  saveEdit: PropTypes.func.isRequired,
+};
 export default EditRecruitForm;

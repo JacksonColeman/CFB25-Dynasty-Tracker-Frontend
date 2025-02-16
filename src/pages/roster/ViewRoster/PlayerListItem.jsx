@@ -1,8 +1,7 @@
-import React, { useState } from "react";
 import "./PlayerListItem.css";
 import { FaTshirt } from "react-icons/fa";
 import DevTraitRibbon from "./DevTraitRibbon";
-
+import PropTypes from "prop-types";
 import PlayerActions from "./PlayerActions";
 
 const PlayerListItem = ({ player }) => {
@@ -16,6 +15,7 @@ const PlayerListItem = ({ player }) => {
     dev_trait,
     redshirted,
     current_redshirt,
+    skill_caps,
   } = player;
 
   return (
@@ -41,9 +41,25 @@ const PlayerListItem = ({ player }) => {
       </div>
       <DevTraitRibbon devTrait={dev_trait} />
       <PlayerActions player={player} />
-      <p>Skill caps: {player.skill_caps}</p>
+      <p>Skill caps: {skill_caps ?? "N/A"}</p>{" "}
+      {/* Updated to handle missing skill_caps */}
     </div>
   );
+};
+
+PlayerListItem.propTypes = {
+  player: PropTypes.shape({
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    position: PropTypes.string.isRequired,
+    archetype: PropTypes.string.isRequired,
+    class_year: PropTypes.string.isRequired,
+    overall: PropTypes.number.isRequired,
+    dev_trait: PropTypes.string.isRequired,
+    redshirted: PropTypes.bool,
+    current_redshirt: PropTypes.bool,
+    skill_caps: PropTypes.string,
+  }).isRequired,
 };
 
 export default PlayerListItem;

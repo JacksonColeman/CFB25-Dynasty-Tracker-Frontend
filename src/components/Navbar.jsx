@@ -1,9 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../services/contexts/AuthContext";
 import { useDynasty } from "../services/contexts/DynastyContext";
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { currentDynasty } = useDynasty();
   // const navigate = useNavigate();
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const UpdateUser = () => {
   const [userId, setUserId] = useState(null);
@@ -19,7 +19,7 @@ const UpdateUser = () => {
         setUserId(userData.id);
         setUsername(userData.username); // Pre-fill with current username
         setEmail(userData.email); // Pre-fill with current email
-      } catch (error) {
+      } catch {
         setError("Could not fetch current user");
       }
     };
@@ -54,11 +54,11 @@ const UpdateUser = () => {
         setError(errorData.error || "An error occurred");
         setMessage(null);
       } else {
-        const data = await response.json();
+        await response.json();
         setMessage("User details updated successfully");
         setError(null);
       }
-    } catch (error) {
+    } catch {
       setError("Failed to update user");
       setMessage(null);
     }

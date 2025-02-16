@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { positions } from "../../../utils/positions";
 import { useRoster } from "../../../services/contexts/RosterContext";
 

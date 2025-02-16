@@ -1,6 +1,6 @@
-import React from "react";
 import { useDynasty } from "../../../services/contexts/DynastyContext";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const DynastyListItem = ({ dynasty }) => {
   const { setActive } = useDynasty();
@@ -23,6 +23,14 @@ const DynastyListItem = ({ dynasty }) => {
       <button onClick={() => handleDynastySelect(dynasty.id)}>Manage</button>
     </div>
   );
+};
+DynastyListItem.propTypes = {
+  dynasty: PropTypes.shape({
+    dynasty_name: PropTypes.string.isRequired,
+    school_name: PropTypes.string.isRequired,
+    year: PropTypes.number.isRequired,
+    id: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default DynastyListItem;

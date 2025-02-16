@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 import { useRoster } from "../../../services/contexts/RosterContext";
 import PlayersLeavingPlayerItem from "./PlayersLeaving/PlayersLeavingPlayerItem";
 
@@ -8,17 +9,17 @@ const RemovePlayers = ({ players, type }) => {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // Toggle selection of a player
-  const togglePlayerSelection = (playerId) => {
-    setSelectedPlayerIds((prevSelected) => {
-      const isSelected = prevSelected.includes(playerId);
-      setHasUnsavedChanges(true); // Mark changes as unsaved
-      if (isSelected) {
-        return prevSelected.filter((id) => id !== playerId);
-      } else {
-        return [...prevSelected, playerId];
-      }
-    });
-  };
+  // const togglePlayerSelection = (playerId) => {
+  //   setSelectedPlayerIds((prevSelected) => {
+  //     const isSelected = prevSelected.includes(playerId);
+  //     setHasUnsavedChanges(true); // Mark changes as unsaved
+  //     if (isSelected) {
+  //       return prevSelected.filter((id) => id !== playerId);
+  //     } else {
+  //       return [...prevSelected, playerId];
+  //     }
+  //   });
+  // };
 
   // Handle delete button click
   const handleDelete = async () => {
@@ -62,6 +63,18 @@ const RemovePlayers = ({ players, type }) => {
       </form>
     </div>
   );
+};
+RemovePlayers.propTypes = {
+  players: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      first_name: PropTypes.string.isRequired,
+      last_name: PropTypes.string.isRequired,
+      overall: PropTypes.number.isRequired,
+      position: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default RemovePlayers;

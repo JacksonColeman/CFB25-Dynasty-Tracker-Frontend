@@ -1,5 +1,5 @@
-import React from "react";
 import "./RedshirtButton.css";
+import PropTypes from "prop-types";
 
 const RedshirtButton = ({ isToggled, onToggle }) => {
   return (
@@ -12,6 +12,10 @@ const RedshirtButton = ({ isToggled, onToggle }) => {
       (RS)
     </div>
   );
+};
+RedshirtButton.propTypes = {
+  isToggled: PropTypes.bool.isRequired,
+  onToggle: PropTypes.func.isRequired,
 };
 
 export default RedshirtButton;

@@ -1,5 +1,5 @@
-import React from "react";
 import TrainingResultsPlayerItem from "./TrainingResultsPlayerItem";
+import PropTypes from "prop-types";
 
 const TrainingResultsComponent = ({ players }) => {
   return (
@@ -10,6 +10,13 @@ const TrainingResultsComponent = ({ players }) => {
       <button>Save Training Results</button>
     </div>
   );
+};
+TrainingResultsComponent.propTypes = {
+  players: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    })
+  ).isRequired,
 };
 
 export default TrainingResultsComponent;

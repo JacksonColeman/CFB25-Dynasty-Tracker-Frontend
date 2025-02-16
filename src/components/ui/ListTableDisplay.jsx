@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const ListTableDisplay = ({ viewType, items, ListView, TableView }) => {
   return (
@@ -10,6 +10,13 @@ const ListTableDisplay = ({ viewType, items, ListView, TableView }) => {
       )}
     </div>
   );
+};
+
+ListTableDisplay.propTypes = {
+  viewType: PropTypes.string.isRequired,
+  items: PropTypes.array.isRequired,
+  ListView: PropTypes.elementType.isRequired,
+  TableView: PropTypes.elementType.isRequired,
 };
 
 export default ListTableDisplay;

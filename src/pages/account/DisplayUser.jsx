@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const DisplayUser = () => {
   const [username, setUsername] = useState(null);
@@ -21,7 +21,7 @@ const DisplayUser = () => {
           const errorData = await response.json();
           setError(errorData.error || "Failed to fetch user information.");
         }
-      } catch (networkError) {
+      } catch {
         setError("Network error occurred while fetching user information.");
       }
     };

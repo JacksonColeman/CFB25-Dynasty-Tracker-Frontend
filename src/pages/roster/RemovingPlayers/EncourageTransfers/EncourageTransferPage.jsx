@@ -1,4 +1,3 @@
-import React from "react";
 import PageHeader from "../../../../components/ui/PageHeader";
 import RemovePlayers from "../RemovePlayers";
 import { useRoster } from "../../../../services/contexts/RosterContext";

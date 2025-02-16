@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const DeleteUser = () => {
   const [error, setError] = useState(null);
@@ -16,7 +16,7 @@ const DeleteUser = () => {
         }
         const userData = await response.json();
         setUserId(userData.id); // Save user id for the delete request
-      } catch (error) {
+      } catch {
         setError("Could not fetch current user");
       }
     };
@@ -52,7 +52,7 @@ const DeleteUser = () => {
         setMessage(data.message);
         setError(null);
       }
-    } catch (error) {
+    } catch {
       setError("Failed to delete user");
       setMessage(null);
     }

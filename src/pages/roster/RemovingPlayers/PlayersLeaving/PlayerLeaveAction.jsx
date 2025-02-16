@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 import { FaExchangeAlt } from "react-icons/fa";
 import Modal from "../../../../components/ui/Modal";
 import { useRoster } from "../../../../services/contexts/RosterContext";
@@ -33,6 +34,13 @@ const PlayerLeaveAction = ({ player }) => {
       </Modal>
     </div>
   );
+};
+PlayerLeaveAction.propTypes = {
+  player: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default PlayerLeaveAction;

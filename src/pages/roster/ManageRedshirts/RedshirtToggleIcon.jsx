@@ -1,5 +1,5 @@
-import React from "react";
 import { FaTshirt } from "react-icons/fa";
+import PropTypes from "prop-types";
 
 const RedshirtToggleIcon = ({ isToggled, onToggle }) => {
   const className = isToggled
@@ -11,6 +11,10 @@ const RedshirtToggleIcon = ({ isToggled, onToggle }) => {
       <FaTshirt fontSize={50} />
     </div>
   );
+};
+RedshirtToggleIcon.propTypes = {
+  isToggled: PropTypes.bool.isRequired,
+  onToggle: PropTypes.func.isRequired,
 };
 
 export default RedshirtToggleIcon;

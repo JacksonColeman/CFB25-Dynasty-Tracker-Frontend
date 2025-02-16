@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import PropTypes from "prop-types";
 import "./styles.css";
 
 const Modal = ({ isOpen, onClose, children }) => {
@@ -21,10 +22,6 @@ const Modal = ({ isOpen, onClose, children }) => {
       <div
         className="modal-container"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        transition={{ duration: 0.3 }}
       >
         <button className="modal-close-button" onClick={onClose}>
           ×
@@ -33,6 +30,12 @@ const Modal = ({ isOpen, onClose, children }) => {
       </div>
     </div>
   );
+};
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node,
 };
 
 export default Modal;

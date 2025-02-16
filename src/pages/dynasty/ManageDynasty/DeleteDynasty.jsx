@@ -1,6 +1,6 @@
-import React from "react";
 import { useDynasty } from "../../../services/contexts/DynastyContext";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const DeleteDynasty = ({ dynasty }) => {
   const { deleteDynasty } = useDynasty();
@@ -22,6 +22,13 @@ const DeleteDynasty = ({ dynasty }) => {
       </button>
     </div>
   );
+};
+
+DeleteDynasty.propTypes = {
+  dynasty: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    dynasty_name: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default DeleteDynasty;

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import React from "react";
 import { useDynasty } from "../../../services/contexts/DynastyContext";
 import PlayerList from "./PlayerList";
 import PlayerTable from "./PlayerTable";
@@ -13,7 +12,8 @@ const ViewRosterPage = () => {
   const { currentDynasty } = useDynasty();
   const [sortAttribute, setSortAttribute] = useState("position");
   const [filterValue, setFilterValue] = useState("");
-  const [rosterView, setRosterView] = useState("list");
+  // const [rosterView, setRosterView] = useState("list");
+  const rosterView = "list";
   const { players } = useRoster();
 
   const filteredPlayers = filterPlayers(players, filterValue);

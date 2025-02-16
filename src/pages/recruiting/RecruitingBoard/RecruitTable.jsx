@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles.css"; // Ensure the path matches where your CSS file is located
 
 const RecruitTable = () => {
   const [recruits, setRecruits] = useState([]);
   const [error, setError] = useState(null);
-  const [formVisible, setFormVisible] = useState(null); // Track which recruit's form is visible
+  // const [formVisible, setFormVisible] = useState(null); // Track which recruit's form is visible
 
   // Fetch recruits data
   useEffect(() => {
@@ -18,7 +18,7 @@ const RecruitTable = () => {
           const errorData = await response.json();
           setError(errorData.error || "Failed to fetch recruits.");
         }
-      } catch (err) {
+      } catch {
         setError("An error occurred. Please try again.");
       }
     };
@@ -27,46 +27,46 @@ const RecruitTable = () => {
   }, []);
 
   // Handle updating recruit to player
-  const handleConvertToPlayer = async (
-    recruitId,
-    overall,
-    position,
-    archetype,
-    devTrait
-  ) => {
-    try {
-      const response = await fetch(
-        `api/recruits/${recruitId}/convert_to_player`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            overall,
-            position,
-            dev_trait: devTrait,
-            archetype,
-          }),
-        }
-      );
+  // const handleConvertToPlayer = async (
+  //   recruitId,
+  //   overall,
+  //   position,
+  //   archetype,
+  //   devTrait
+  // ) => {
+  //   try {
+  //     const response = await fetch(
+  //       `api/recruits/${recruitId}/convert_to_player`,
+  //       {
+  //         method: "PATCH",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           overall,
+  //           position,
+  //           dev_trait: devTrait,
+  //           archetype,
+  //         }),
+  //       }
+  //     );
 
-      if (response.ok) {
-        const updatedData = await response.json();
-        setRecruits((prevRecruits) =>
-          prevRecruits.map((recruit) =>
-            recruit.id === updatedData.id ? updatedData : recruit
-          )
-        );
-        setFormVisible(null); // Hide the form after conversion
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || "Failed to convert recruit to player.");
-      }
-    } catch (err) {
-      setError("An error occurred. Please try again.");
-    }
-  };
+  //     if (response.ok) {
+  //       const updatedData = await response.json();
+  //       setRecruits((prevRecruits) =>
+  //         prevRecruits.map((recruit) =>
+  //           recruit.id === updatedData.id ? updatedData : recruit
+  //         )
+  //       );
+  //       setFormVisible(null); // Hide the form after conversion
+  //     } else {
+  //       const errorData = await response.json();
+  //       setError(errorData.error || "Failed to convert recruit to player.");
+  //     }
+  //   } catch (err) {
+  //     setError("An error occurred. Please try again.");
+  //   }
+  // };
 
   return (
     <div>

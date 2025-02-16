@@ -1,5 +1,5 @@
-import React from "react";
 import RecruitCard from "./RecruitCard"; // Import your RecruitCard component
+import PropTypes from "prop-types";
 
 const RecruitList = ({ recruits }) => {
   return (
@@ -10,6 +10,14 @@ const RecruitList = ({ recruits }) => {
       ))}
     </div>
   );
+};
+RecruitList.propTypes = {
+  recruits: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      // Add other recruit properties here if needed
+    })
+  ).isRequired,
 };
 
 export default RecruitList;

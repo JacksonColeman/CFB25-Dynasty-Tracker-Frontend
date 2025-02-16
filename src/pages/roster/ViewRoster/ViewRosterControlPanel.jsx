@@ -1,6 +1,6 @@
-import React from "react";
 import Dropdown from "../../../components/ui/Dropdown";
 import { positionDropdownOptions } from "../../../utils/positionDropdownOptions";
+import PropTypes from "prop-types";
 
 const ViewRosterControlPanel = ({
   sortAttribute,
@@ -37,6 +37,12 @@ const ViewRosterControlPanel = ({
       />
     </div>
   );
+};
+ViewRosterControlPanel.propTypes = {
+  sortAttribute: PropTypes.string.isRequired,
+  onSortChange: PropTypes.func.isRequired,
+  filterValue: PropTypes.string.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
 };
 
 export default ViewRosterControlPanel;

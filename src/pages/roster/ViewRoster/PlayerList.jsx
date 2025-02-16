@@ -1,5 +1,5 @@
-import React from "react";
 import PlayerListItem from "./PlayerListItem";
+import PropTypes from "prop-types";
 
 const PlayerList = ({ players }) => {
   return (
@@ -9,6 +9,9 @@ const PlayerList = ({ players }) => {
       ))}
     </div>
   );
+};
+PlayerList.propTypes = {
+  players: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default PlayerList;

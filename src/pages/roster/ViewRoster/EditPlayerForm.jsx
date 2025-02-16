@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { positions } from "../../../utils/positions";
+import PropTypes from "prop-types";
 import { useRoster } from "../../../services/contexts/RosterContext";
 
 const EditPlayerForm = ({ player, saveEdit }) => {
@@ -62,7 +63,7 @@ const EditPlayerForm = ({ player, saveEdit }) => {
   };
 
   const handlePositionChange = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     setFormValues((prevValues) => ({
       ...prevValues,
       position: value,
@@ -223,6 +224,10 @@ const EditPlayerForm = ({ player, saveEdit }) => {
       <button type="submit">Save</button>
     </form>
   );
+};
+EditPlayerForm.propTypes = {
+  player: PropTypes.object.isRequired,
+  saveEdit: PropTypes.func.isRequired,
 };
 
 export default EditPlayerForm;

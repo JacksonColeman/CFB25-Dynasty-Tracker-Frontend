@@ -1,5 +1,5 @@
-import React from "react";
 import "./FormField.css";
+import PropTypes from "prop-types";
 
 const FormField = ({
   label,
@@ -14,7 +14,6 @@ const FormField = ({
   options = [],
   min,
   max,
-  onInput,
   showLabel = true,
   className,
 }) => {
@@ -109,6 +108,27 @@ const FormField = ({
       {renderInput()}
     </div>
   );
+};
+FormField.propTypes = {
+  label: PropTypes.string,
+  type: PropTypes.string,
+  id: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool,
+  ]),
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  required: PropTypes.bool,
+  disabled: PropTypes.bool,
+  options: PropTypes.arrayOf(PropTypes.string),
+  min: PropTypes.number,
+  max: PropTypes.number,
+  onInput: PropTypes.func,
+  showLabel: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 export default FormField;

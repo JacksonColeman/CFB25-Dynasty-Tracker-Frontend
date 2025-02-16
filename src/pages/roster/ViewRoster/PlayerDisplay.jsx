@@ -1,6 +1,6 @@
-import React from "react";
 import PlayerList from "./PlayerList";
 import PlayerTable from "./PlayerTable";
+import PropTypes from "prop-types";
 
 const PlayerDisplay = ({ rosterView, players }) => {
   return (
@@ -12,6 +12,10 @@ const PlayerDisplay = ({ rosterView, players }) => {
       )}
     </div>
   );
+};
+PlayerDisplay.propTypes = {
+  rosterView: PropTypes.string.isRequired,
+  players: PropTypes.array.isRequired,
 };
 
 export default PlayerDisplay;

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import FormField from "../../../components/ui/FormField";
 import { positions } from "../../../utils/positions";
 import { useRoster } from "../../../services/contexts/RosterContext";
 import { devTraits, classYears, states } from "../../../utils/utils";
-import { heightOptions, heightToInches } from "../../../utils/heights";
+import { heightToInches } from "../../../utils/heights";
 import "./PlayerForm.css";
 import RedshirtButton from "./RedshirtButton";
 // import NumberInput from "../../../components/ui/NumberInput";
@@ -63,10 +63,10 @@ const PlayerForm = () => {
     ? positions[formData.position]
     : [];
 
-  const validateOverall = (e) => {
-    const value = Math.max(1, Math.min(99, Number(e.target.value)));
-    setFormData((prev) => ({ ...prev, overall: value }));
-  };
+  // const validateOverall = (e) => {
+  //   const value = Math.max(1, Math.min(99, Number(e.target.value)));
+  //   setFormData((prev) => ({ ...prev, overall: value }));
+  // };
 
   return (
     <form onSubmit={handleSubmit}>

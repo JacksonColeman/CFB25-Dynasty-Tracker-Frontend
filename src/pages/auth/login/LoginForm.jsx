@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../../../services/contexts/AuthContext";
 
@@ -11,7 +11,7 @@ const LoginForm = () => {
   useEffect(() => {
     // Reset the error when the component is mounted or when the location changes
     resetError();
-  }, [location]);
+  }, [location, resetError]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +29,7 @@ const LoginForm = () => {
       navigate(from, { replace: true });
     } catch (err) {
       // Error is already handled in auth context
+      console.log(err);
     }
   };
 
@@ -78,7 +79,7 @@ const LoginForm = () => {
 
           <div>
             <div>
-              <Link to="/signup">Don't have an account? Sign up</Link>
+              <Link to="/signup">Don&apos;t have an account? Sign up</Link>
             </div>
           </div>
         </form>

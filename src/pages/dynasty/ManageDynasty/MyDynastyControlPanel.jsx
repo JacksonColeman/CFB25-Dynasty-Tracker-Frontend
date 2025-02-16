@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const MyDynastyControlPanel = ({ onClickEdit, onClickDelete }) => {
   return (
@@ -7,6 +7,11 @@ const MyDynastyControlPanel = ({ onClickEdit, onClickDelete }) => {
       <button onClick={onClickDelete}>Delete</button>
     </div>
   );
+};
+
+MyDynastyControlPanel.propTypes = {
+  onClickEdit: PropTypes.func.isRequired,
+  onClickDelete: PropTypes.func.isRequired,
 };
 
 export default MyDynastyControlPanel;

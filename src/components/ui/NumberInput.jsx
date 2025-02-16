@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 import "./NumberInput.css";
 
 const NumberInput = ({ onChange, defaultValue, min = 0, max = 99 }) => {
@@ -43,6 +44,13 @@ const NumberInput = ({ onChange, defaultValue, min = 0, max = 99 }) => {
       </div>
     </div>
   );
+};
+
+NumberInput.propTypes = {
+  onChange: PropTypes.func,
+  defaultValue: PropTypes.number,
+  min: PropTypes.number,
+  max: PropTypes.number,
 };
 
 export default NumberInput;

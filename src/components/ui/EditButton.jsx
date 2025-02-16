@@ -1,5 +1,5 @@
-import React from "react";
 import { FaEdit } from "react-icons/fa";
+import PropTypes from "prop-types";
 import "./EditButton.css";
 
 const EditButton = ({ onClick }) => {
@@ -8,6 +8,9 @@ const EditButton = ({ onClick }) => {
       <FaEdit />
     </button>
   );
+};
+EditButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
 };
 
 export default EditButton;

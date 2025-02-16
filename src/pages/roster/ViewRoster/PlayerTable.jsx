@@ -1,5 +1,4 @@
-import React from "react";
-import { FaTshirt } from "react-icons/fa";
+import PropTypes from "prop-types";
 
 const PlayerTable = ({ players }) => {
   if (!players || players.length === 0) {
@@ -45,6 +44,23 @@ const PlayerTable = ({ players }) => {
       </table>
     </div>
   );
+};
+
+PlayerTable.propTypes = {
+  players: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      first_name: PropTypes.string.isRequired,
+      last_name: PropTypes.string.isRequired,
+      class_year: PropTypes.string.isRequired,
+      position: PropTypes.string.isRequired,
+      archetype: PropTypes.string.isRequired,
+      overall: PropTypes.number.isRequired,
+      dev_trait: PropTypes.string.isRequired,
+      redshirted: PropTypes.bool,
+      current_redshirt: PropTypes.bool,
+    })
+  ).isRequired,
 };
 
 export default PlayerTable;

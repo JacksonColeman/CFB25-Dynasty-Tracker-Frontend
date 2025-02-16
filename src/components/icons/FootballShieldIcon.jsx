@@ -1,4 +1,3 @@
-import React from "react";
 import { IoShieldSharp } from "react-icons/io5";
 import { FaFootballBall } from "react-icons/fa";
 

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 import DevTraitRibbon from "../../ViewRoster/DevTraitRibbon";
 import FormField from "../../../../components/ui/FormField";
 
 const TrainingResultsPlayerItem = ({ player }) => {
   const {
-    id,
     first_name,
     last_name,
     position,
@@ -13,7 +13,6 @@ const TrainingResultsPlayerItem = ({ player }) => {
     overall,
     dev_trait,
     redshirted,
-    current_redshirt,
   } = player;
 
   const [newOverall, setNewOverall] = useState(overall);
@@ -49,6 +48,20 @@ const TrainingResultsPlayerItem = ({ player }) => {
       <DevTraitRibbon devTrait={dev_trait} />
     </div>
   );
+};
+TrainingResultsPlayerItem.propTypes = {
+  player: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    position: PropTypes.string.isRequired,
+    archetype: PropTypes.string.isRequired,
+    class_year: PropTypes.string.isRequired,
+    overall: PropTypes.number.isRequired,
+    dev_trait: PropTypes.string.isRequired,
+    redshirted: PropTypes.bool.isRequired,
+    current_redshirt: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 export default TrainingResultsPlayerItem;

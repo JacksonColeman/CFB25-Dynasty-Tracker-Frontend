@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const SearchBar = ({ placeholder, value, onChange, style }) => {
   return (
@@ -10,6 +10,13 @@ const SearchBar = ({ placeholder, value, onChange, style }) => {
       style={style}
     />
   );
+};
+
+SearchBar.propTypes = {
+  placeholder: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  style: PropTypes.object,
 };
 
 export default SearchBar;

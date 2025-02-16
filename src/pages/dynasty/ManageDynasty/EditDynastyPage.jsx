@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDynasty } from "../../../services/contexts/DynastyContext";
 import EditDynastyForm from "./EditDynastyForm";
-import { useNavigate } from "react-router-dom";
 import MyDynastyControlPanel from "./MyDynastyControlPanel";
 import DeleteDynasty from "./DeleteDynasty";
 
@@ -9,7 +8,6 @@ const EditDynastyPage = () => {
   const { loading, currentDynasty, advanceYear } = useDynasty();
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const navigate = useNavigate();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -32,7 +30,7 @@ const EditDynastyPage = () => {
     try {
       await advanceYear();
     } catch {
-      throw error;
+      console.log("Error advancing year");
     }
   };
 

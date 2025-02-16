@@ -1,4 +1,3 @@
-import React from "react";
 import PlayerForm from "./PlayerForm";
 import PageHeader from "../../../components/ui/PageHeader";
 

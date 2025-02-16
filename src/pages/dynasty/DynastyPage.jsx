@@ -1,4 +1,3 @@
-import React from "react";
 import DynastyList from "./MyDynasties/DynastyList";
 import CreateDynastyForm from "./CreateDynasty/CreateDynastyForm";
 

@@ -1,58 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
 import { useDynasty } from "../../../services/contexts/DynastyContext";
 import DynastyListItem from "./DynastyListItem";
 
 const DynastyList = () => {
-  const [newDynastyName, setNewDynastyName] = useState("");
-  const {
-    dynasties,
-    currentDynasty,
-    loading,
-    loadDynasties,
-    setActive,
-    editDynasty,
-    deleteDynasty,
-  } = useDynasty();
-  const navigate = useNavigate();
+  // const [newDynastyName, setNewDynastyName] = useState("");
+  const { dynasties, loading, loadDynasties } = useDynasty();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     loadDynasties();
     console.log("Dynasties:", dynasties);
-  }, []);
+  }, [dynasties, loadDynasties]);
 
-  const handleDynastySelect = async (dynastyId) => {
-    try {
-      await setActive(dynastyId);
-      navigate("/roster"); // Navigate to roster page after selection
-    } catch (error) {
-      console.error("Error selecting dynasty:", error);
-    }
-  };
+  // const handleDynastySelect = async (dynastyId) => {
+  //   try {
+  //     await setActive(dynastyId);
+  //     navigate("/roster"); // Navigate to roster page after selection
+  //   } catch (error) {
+  //     console.error("Error selecting dynasty:", error);
+  //   }
+  // };
 
-  const handleCreateDynasty = async (e) => {
-    e.preventDefault();
-    if (!newDynastyName.trim()) return;
+  // const handleCreateDynasty = async (e) => {
+  //   e.preventDefault();
+  //   if (!newDynastyName.trim()) return;
 
-    try {
-      const response = await fetch("/api/dynasties", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: newDynastyName }),
-      });
+  //   try {
+  //     const response = await fetch("/api/dynasties", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ name: newDynastyName }),
+  //     });
 
-      if (!response.ok) {
-        throw new Error("Failed to create dynasty");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Failed to create dynasty");
+  //     }
 
-      setNewDynastyName("");
-      await loadDynasties(); // Refresh the dynasty list
-    } catch (error) {
-      console.error("Error creating dynasty:", error);
-    }
-  };
+  //     setNewDynastyName("");
+  //     await loadDynasties(); // Refresh the dynasty list
+  //   } catch (error) {
+  //     console.error("Error creating dynasty:", error);
+  //   }
+  // };
 
   if (loading) {
     return (

@@ -1,6 +1,4 @@
-import React from "react";
 import DisplayUser from "./DisplayUser";
-import UpdateUser from "./UpdateUser";
 import DeleteUser from "./DeleteUser";
 import LogoutButton from "./LogoutButton";
 
